@@ -1,0 +1,20 @@
+.home {
+    min-height: 100dvh;
+    background-color: #e8f3ee;
+}
+.home-card-header {
+    font-weight: 500;
+    color: #16a34a;
+}
+.smiles-delivered {
+    background-color: #16a34a;
+}
+.smile-head {
+    font-weight: 500;
+    color: #16a34a;
+}
+@media (max-width: 768px) {
+    .home-hidden {
+        display: none;
+    }
+}

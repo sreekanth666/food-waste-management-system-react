@@ -1,0 +1,28 @@
+.navbar-custom {
+    position: sticky;
+    width: 100%;
+    top: 0;
+}
+@media (min-width: 750px) {
+    .hero-title {
+        font-size: 5rem !important;
+    }
+    .navbar-custom {
+        padding-left: 3rem;
+        padding-right: 3rem;
+    }
+    .footer {
+        padding: 0 3rem;
+    }
+}
+@media (max-width: 750px) {
+    .logo {
+        width: 100px;
+    }
+    .hero-title {
+        font-size: 2rem;
+    }
+    .sign-up {
+        margin-bottom: 1rem;
+    }
+} 

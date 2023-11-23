@@ -1,0 +1,12 @@
+.dash-panel::-webkit-scrollbar {
+    width: 8px;
+}
+.dash-panel::-webkit-scrollbar-track{
+    background-color: transparent;
+}
+.dash-panel::-webkit-scrollbar-thumb{
+    background-color: #dfdfdf;
+    border-radius: 10px;
+}
+
+

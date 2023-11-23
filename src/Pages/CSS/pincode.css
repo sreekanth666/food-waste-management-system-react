@@ -1,0 +1,47 @@
+.pincode-home {
+    height: 100dvh;
+    background-color: #16a34a;
+}
+.pincode-row {
+    height: 100%;
+    width: 100%;
+}
+.pincode-title {
+    color: #ffffff;
+}
+.pincode-heading {
+    font-size: 5rem;
+}
+@media (max-width: 768px) {
+    .pincode-heading {
+        font-size: 3rem;
+    }
+    .pincode-hidden {
+        display: none;
+    }
+}
+
+.pincode-form {
+    background-color: #ffffff;
+}
+.pincode {
+    height: 4rem;
+}
+.pincode-btn {
+    background-color: #191b1f;
+    color: white;
+    border: 0;
+    font-weight: 500;
+}
+.pincode-btn:hover {
+    background-color: #000000;
+    color: white;
+}
+input:focus {
+    box-shadow: none;
+    border-color: #16a34a !important;
+    box-shadow: 0 0 0 0 !important;
+}
+.pincode-login {
+    color: #16a34a;
+}
