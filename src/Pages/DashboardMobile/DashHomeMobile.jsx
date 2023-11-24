@@ -4,23 +4,24 @@ import '../CSS/dashhome.css'
 function DashHome() {
     return (
         <>
-            <div className='container-fluid d-flex flex-column align-items-center'>
-                <div className="d-flex flex-wrap justify-content-between text-center" style={{minHeight:'150px',width:'100%'}}>
-                    <div className="border mb-3 rounded-3 text-center d-flex flex-column p-3 border-end" style={{width:'20rem'}}>
+            <p className="fs-1 mt-4 mb-4" style={{fontWeight:'500'}}>Home</p>
+            <div className='container-fluid d-flex flex-column align-items-center justify-content-center'>
+                <div className="d-flex flex-column justify-content-between text-center" style={{minHeight:'150px',width:'100%'}}>
+                    <div className="border mb-3 rounded-3 text-center d-flex flex-column p-3 border-end" style={{width:'100%'}}>
                         <p className="fs-4" style={{fontWeight:'500'}}>Requested</p>
                         <div className='row'>
                             <div className="col-6 border-end d-flex justify-content-center align-items-center">Total</div>
                             <div className="col-6 d-flex justify-content-center align-items-center" style={{color:'#531dab'}}><span className='home-badges-1'>5698</span></div>
                         </div>
                     </div>
-                    <div className="border mb-3 rounded-3 d-flex flex-column text-center p-3 border-end" style={{width:'20rem'}}>
+                    <div className="border mb-3 rounded-3 d-flex flex-column text-center p-3 border-end" style={{width:'100%'}}>
                         <p className="fs-4" style={{fontWeight:'500'}}>Accepted</p>
                         <div className='row'>
                             <div className="col-6 border-end d-flex justify-content-center align-items-center">Total</div>
                             <div className="col-6 d-flex justify-content-center align-items-center" style={{color:'#08979c'}}><span className='home-badges-2'>5698</span></div>
                         </div>
                     </div>
-                    <div className="border mb-3 rounded-3 d-flex flex-column text-center p-3" style={{width:'20rem'}}>
+                    <div className="border mb-3 rounded-3 d-flex flex-column text-center p-3" style={{width:'100%'}}>
                         <p className="fs-4" style={{fontWeight:'500'}}>Contributed</p>
                         <div className='row'>
                             <div className="col-6 border-end d-flex justify-content-center align-items-center">Total</div>

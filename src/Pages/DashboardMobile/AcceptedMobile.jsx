@@ -3,11 +3,10 @@ import React from 'react'
 function Accepted() {
     return (
         <>
+            <p className="fs-1 mt-4 mb-4" style={{fontWeight:'500'}}>Accepted</p>
             <div className='container-fluid d-flex flex-column align-items-center'>
                 <div className="mt-2 row gap-3 p-0" style={{minHeight:'150px',width:'100%'}}>
                     <div className="col-sm-12 col-md-12 col-lg-8 col-xl-8 d-flex flex-column p-3 pb-1 border rounded-3">
-                        <p className="fs-5" style={{fontWeight:'500'}}>Accepted</p>
-
                         <table class="table">
                             <thead>
                                 <tr>

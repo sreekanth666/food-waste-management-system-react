@@ -55,11 +55,11 @@ function Dashboard() {
                 :
                 <>
                     <div className='container-fluid p-0' style={{minHeight:'90dvh'}}>
-                        <div className="container-fluid bg-white mt-4 mb-4 rounded-3 pt-4 d-flex flex-column align-items-center dash-panel" style={{overflowY:'scroll'}}>
-                            {selectedPageMobile === "home" ? "<DashHomeMobile />" : null}
-                            {selectedPageMobile === "request" ? "<RequestsMobile />" : null}
-                            {selectedPageMobile === "accepted" ? "<AcceptedMobile />" : null}
-                            {selectedPageMobile === "profile" ? "<ProfileMobile />" : null}
+                        <div className="container-fluid bg-white mb-4 rounded-3 dash-panel" style={{overflowY:'scroll'}}>
+                            {selectedPageMobile === "home" ? <DashHomeMobile /> : null}
+                            {selectedPageMobile === "request" ? <RequestsMobile /> : null}
+                            {selectedPageMobile === "accepted" ? <AcceptedMobile /> : null}
+                            {selectedPageMobile === "profile" ? <ProfileMobile /> : null}
                         </div>
                     </div>
                         <BottomNavigation
@@ -69,6 +69,7 @@ function Dashboard() {
                                 setValue(newValue);
                             }}
                             style={{position: 'sticky', bottom: 0}}
+                            className='mt-4'
                         >
                             <BottomNavigationAction label="Home" icon={<i class="fa-solid fa-house"></i>} onClick={() => setSelectedPageMobile("home")} />
                             <BottomNavigationAction label="Request" icon={<i class="fa-solid fa-paper-plane"></i>} onClick={() => setSelectedPageMobile("request")} />
