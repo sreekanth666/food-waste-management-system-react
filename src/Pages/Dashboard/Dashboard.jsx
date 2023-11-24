@@ -7,13 +7,18 @@ import DashHome from './DashHome'
 import '../CSS/dashboard.css'
 import { useMediaQuery } from 'react-responsive'
 import { BottomNavigation, BottomNavigationAction } from '@mui/material'
+import DashHomeMobile from '../DashboardMobile/DashHomeMobile'
+import RequestsMobile from '../DashboardMobile/RequestsMobile'
+import AcceptedMobile from '../DashboardMobile/AcceptedMobile'
+import ProfileMobile from '../DashboardMobile/ProfileMobile'
 
 function Dashboard() {
     const isTabletOrMobile = useMediaQuery({ minWidth: 1224 })
     const [selectedPage, setSelectedPage] = useState("home")
+    const [selectedPageMobile, setSelectedPageMobile] = useState("home")
     const [value, setValue] = React.useState(0);
 
-    console.log(isTabletOrMobile);
+    console.log(selectedPageMobile);
     return (
         <>
             {
@@ -50,8 +55,12 @@ function Dashboard() {
                 :
                 <>
                     <div className='container-fluid p-0' style={{minHeight:'90dvh'}}>
-                        
-                        
+                        <div className="container-fluid bg-white mt-4 mb-4 rounded-3 pt-4 d-flex flex-column align-items-center dash-panel" style={{overflowY:'scroll'}}>
+                            {selectedPageMobile === "home" ? "<DashHomeMobile />" : null}
+                            {selectedPageMobile === "request" ? "<RequestsMobile />" : null}
+                            {selectedPageMobile === "accepted" ? "<AcceptedMobile />" : null}
+                            {selectedPageMobile === "profile" ? "<ProfileMobile />" : null}
+                        </div>
                     </div>
                         <BottomNavigation
                             showLabels
@@ -59,12 +68,12 @@ function Dashboard() {
                             onChange={(event, newValue) => {
                                 setValue(newValue);
                             }}
-                            style={{position: 'fixed', bottom: 0, width: '100%'}}
+                            style={{position: 'sticky', bottom: 0}}
                         >
-                            <BottomNavigationAction label="Home" icon={<i class="fa-solid fa-house"></i>} />
-                            <BottomNavigationAction label="Request" icon={<i class="fa-solid fa-paper-plane"></i>} />
-                            <BottomNavigationAction label="Accepted" icon={<i class="fa-solid fa-circle-check"></i>} />
-                            <BottomNavigationAction label="You" icon={<i class="fa-solid fa-user"></i>} />
+                            <BottomNavigationAction label="Home" icon={<i class="fa-solid fa-house"></i>} onClick={() => setSelectedPageMobile("home")} />
+                            <BottomNavigationAction label="Request" icon={<i class="fa-solid fa-paper-plane"></i>} onClick={() => setSelectedPageMobile("request")} />
+                            <BottomNavigationAction label="Accepted" icon={<i class="fa-solid fa-circle-check"></i>} onClick={() => setSelectedPageMobile("accepted")} />
+                            <BottomNavigationAction label="You" icon={<i class="fa-solid fa-user"></i>} onClick={() => setSelectedPageMobile("profile")} />
                         </BottomNavigation>
                 </>
             }

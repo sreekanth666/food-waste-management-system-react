@@ -1,8 +1,11 @@
 import React from 'react'
 import './CSS/navbar.css'
-import { Navbar, Container, NavDropdown, Form, Nav, Offcanvas, Button } from 'react-bootstrap'
+import { Navbar, Container, NavDropdown, Nav, Offcanvas, Button } from 'react-bootstrap'
+import { useMediaQuery } from 'react-responsive'
 
 function Navigation() {
+  const screen = useMediaQuery({maxWidth: 768})
+  console.log(screen);
   return (
     <div>
         {['lg'].map((expand) => (
@@ -29,6 +32,12 @@ function Navigation() {
                     <NavDropdown
                       title="How it Works"
                       id={`offcanvasNavbarDropdown-expand-${expand}`}
+                      className=
+                      {
+                        screen ?
+                        "mb-3" :
+                        ""
+                      }
                     >
                       <NavDropdown.Item href="#action3">
                         Registration & Listing
@@ -42,8 +51,8 @@ function Navigation() {
                       </NavDropdown.Item>
                     </NavDropdown>
                   </Nav>
-                    <Nav.Link><Button variant="btn border border-dark border-1 rounded-4 me-2 sign-up" style={{fontWeight:"500"}}>Sign Up</Button></Nav.Link>
-                    <Nav.Link><Button variant="btn border border-dark border-1 rounded-4" style={{fontWeight:"500"}}>Log In</Button></Nav.Link>
+                    <Nav.Link><Button variant="btn border border-dark border-1 rounded-3 me-2 sign-up" style={{fontWeight:"500"}} className={!screen ?"mb-2" :""}>Sign Up</Button></Nav.Link>
+                    <Nav.Link><Button variant="btn border border-dark border-1 rounded-3" style={{fontWeight:"500"}}>Log In</Button></Nav.Link>
                 </Offcanvas.Body>
               </Navbar.Offcanvas>
             </Container>

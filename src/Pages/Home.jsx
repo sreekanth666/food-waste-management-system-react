@@ -13,8 +13,8 @@ function Home() {
 
       {/* Requests metrics */}
       <div className='home pb-2'>
-        <div className="container d-flex flex-column justify-content-center align-items-center pt-5 mb-5">
-          <div className="row">
+        <div className="container d-flex flex-column justify-content-center pt-5 mb-5">
+          <div className="row p-0">
             
             <div className="col-sm-6">
               {/* Metrics one */}
@@ -45,7 +45,7 @@ function Home() {
             </div>
 
             <div className="col-sm-6">
-              <img src={kidsSmiling} alt="Kids smiling" className='img-fluid rounded-3' />
+              <img src={kidsSmiling} alt="Kids smiling" className='img-fluid image-home rounded-3' />
             </div>
           </div>
 
