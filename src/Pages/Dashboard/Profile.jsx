@@ -1,7 +1,15 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button } from 'react-bootstrap'
 
 function Profile() {
+    const [userDetails, setUserDetails] = useState({})
+    useEffect(() => {
+        if (sessionStorage.getItem("existingUser")) {
+            setUserDetails(JSON.parse(sessionStorage.getItem("existingUser")));
+        } else {
+            
+        }
+    }, [])
     return (
         <>
             <div className="container-fluid d-flex justify-content-between align-items-center">
@@ -19,28 +27,29 @@ function Profile() {
                 <div className='row'>
                         <div className="col-2 text-secondary">Name:</div>
                         <div className="col-auto">
-                            <p>Sreekanth K</p>
+                            <p>{userDetails?.username}</p>
                         </div>
                     </div>
                     <div className='row'>
                         <div className="col-2 text-secondary">Phone:</div>
                         <div className="col-auto">
-                            <p>7592033013</p>
+                            <p>{userDetails?.phone}</p>
                         </div>
                     </div>
                     <div className='row'>
                         <div className="col-2 text-secondary">Email:</div>
                         <div className="col-auto">
-                            <p>srekthk@gmail.com</p>
+                            <p>{userDetails?.email}</p>
                         </div>
                     </div>
                     <div className='row'>
                         <div className="col-2 text-secondary">Address:</div>
                         <div className="col-auto">
-                            <p className='m-0'>Valanath House 406/A</p>
-                            <p className='m-0'>Killimangalam P.O</p>
-                            <p className='m-0'>Thrissur</p>
-                            <p className='m-0'>680591</p>
+                            <p className='m-0'>{userDetails?.address}</p>
+                            <p className='m-0'>{userDetails?.city}</p>
+                            <p className='m-0'>{userDetails?.district}</p>
+                            <p className='m-0'>{userDetails?.state}</p>
+                            <p className='m-0'>{userDetails?.pincode}</p>
                         </div>
                     </div>
                 </div>
@@ -51,3 +60,5 @@ function Profile() {
 }
 
 export default Profile
+
+

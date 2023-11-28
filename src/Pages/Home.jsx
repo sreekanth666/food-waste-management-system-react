@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Navigation from '../Components/Navigation'
 import Footer from '../Components/Footer'
 import './CSS/home.css'
@@ -7,6 +7,14 @@ import kidsSmiling from '../Assets/kids-smiling.jpg'
 import { Link } from 'react-router-dom'
 
 function Home() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  useEffect(() => {
+    if (sessionStorage.getItem("existingUser")) {
+      setIsLoggedIn(true)
+    } else {
+      setIsLoggedIn(false)
+    }
+  }, [])
   return (
     <>
       <Navigation />
@@ -68,11 +76,61 @@ function Home() {
       {/* Requests list */}
       <SortedReqList />
 
-      <div className="container mb-5">
-        <p className='m-0 fs-1 sorted-heading'>Ready to make a difference? Explore your dedicated dashboard here.</p>
-        <Link to={'/dashboard'}><button className='btn btn-success goto-dashboard'>Go to dashboard</button></Link>
-      </div>
+      {/* About us */}
+      <div className="container" id='about'>
+        <div className='mb-3'>
+          <p className='m-0 fs-1 sorted-heading'>Repurpose. Reclaim. Recreate.</p>
+          <p>At <span>Smile</span>, we're transforming waste into opportunity. Share surplus food or waste and watch it find a new purpose or responsible disposal. Join our community and reshape the future with every action.</p>
+        </div>
 
+        <div className='mb-5'>
+          <p className='m-0 fs-3 sorted-heading'>Our Mission</p>
+          <div className="row mb-4">
+            <div className="col-2">
+              <div className="container-fluid rounded-circle text-white d-flex justify-content-center align-items-center" style={{height:'2rem',width:'2rem',backgroundColor:'#16a34a'}}>1</div>
+            </div>
+            <div className="col">
+            <span className='fs-4' style={{fontWeight:'500'}}>Revolutionize Waste</span> <br /> Give waste a makeover by connecting it to those who can use it or dispose of it responsibly.
+            </div>
+          </div>
+
+          <div className="row mb-4">
+            <div className="col-2">
+              <div className="container-fluid rounded-circle text-white d-flex justify-content-center align-items-center" style={{height:'2rem',width:'2rem',backgroundColor:'#16a34a'}}>2</div>
+            </div>
+            <div className="col">
+            <span className='fs-4' style={{fontWeight:'500'}}>Community Collaboration</span> <br /> Together, we're reshaping waste management, one post at a time.
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-2">
+              <div className="container-fluid rounded-circle text-white d-flex justify-content-center align-items-center" style={{height:'2rem',width:'2rem',backgroundColor:'#16a34a'}}>3</div>
+            </div>
+            <div className="col">
+            <span className='fs-4' style={{fontWeight:'500'}}>Sustainability Matters</span> <br /> Every action counts toward a greener, more responsible world.
+            </div>
+          </div>
+        </div>
+
+        <div className='mb-5'>
+          <p className='m-0 fs-3 sorted-heading'>Your Impact</p>
+          <div className="row mb-4">
+            <div className="col p-3 rounded-3 text-light" style={{backgroundColor:'#16a34a'}}>
+              <p className='fs-5 m-0' style={{fontWeight:'500'}}>Purposeful Sharing</p>
+              Share surplus food or waste and make a difference.
+              <p className='fs-5 m-0 mt-3' style={{fontWeight:'500'}}>Community-driven</p>
+              Join us in making waste management a collective effort.
+              <p className='fs-5 m-0 mt-3' style={{fontWeight:'500'}}>Responsible Change</p>
+              Be part of a movement that reshapes waste into opportunity.
+            </div>
+            <div className="col-4 d-flex flex-column align-items-end justify-content-end">
+              <span className='fs-3' style={{fontWeight:'500'}}>Join Smile and let's redefine waste together!</span>
+              <button className='btn border-0 text-light w-100 mt-3' style={{backgroundColor:'#16a34a'}}>Join Now</button>
+            </div>
+          </div>
+        </div>
+      </div>
       <Footer />
     </>
   )

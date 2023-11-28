@@ -1,0 +1,45 @@
+@media (max-width: 768px) {
+    .register-hidden {
+        display: none;
+    }
+    .progress-items {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .progress-item-span1 {
+        background-color: transparent !important;
+        color: #16a34a !important;
+    }
+}
+.progress-items {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+}
+
+@media (min-width: 768px) {
+    .register-form {
+        padding-left: 3rem !important;
+        padding-right: 3rem !important;
+    }
+}
+.register-btn {
+    background-color: #16a34a;
+    color: white;
+    border: 0;
+    font-weight: 500;
+}
+.register-btn:hover {
+    background-color: #03752d;
+    color: white;
+}
+input:focus {
+    box-shadow: none;
+    border: 1px solid #16a34a !important;
+    box-shadow: 0 0 0 0 !important;
+}
+select:focus {
+    box-shadow: none;
+    border-color: #16a34a !important;
+    box-shadow: 0 0 0 0 !important;
+}

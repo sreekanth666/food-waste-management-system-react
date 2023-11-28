@@ -18,7 +18,6 @@ function Dashboard() {
     const [selectedPageMobile, setSelectedPageMobile] = useState("home")
     const [value, setValue] = React.useState(0);
 
-    console.log(selectedPageMobile);
     return (
         <>
             {
@@ -26,7 +25,7 @@ function Dashboard() {
                 <div className='container-fluid dashboard' style={{backgroundColor:'#e8f3ee', height:'100dvh'}}>
                     <div className="container-fluid d-flex" style={{height:'100%'}}>
                         <div className="container-fluid mt-4" style={{width:'15rem'}}>
-                            <div className='options mt-3'>
+                            <div className='options'>
                                 <div className="option p-3 rounded-3" onClick={() => setSelectedPage("home")} style={selectedPage === "home"?{backgroundColor:'#16a34a',color:'white'}:{backgroundColor:'white'}}>
                                     <p className='m-0' style={{fontWeight:'500'}} onClick={() => setSelectedPage("home")}><i class="fa-solid fa-house"></i> Home</p>
                                 </div>

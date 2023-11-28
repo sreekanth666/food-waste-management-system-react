@@ -1,11 +1,20 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './CSS/navbar.css'
 import { Navbar, Container, NavDropdown, Nav, Offcanvas, Button } from 'react-bootstrap'
 import { useMediaQuery } from 'react-responsive'
+import { Link } from 'react-router-dom'
 
 function Navigation() {
   const screen = useMediaQuery({maxWidth: 768})
   console.log(screen);
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  useEffect(() => {
+    if (sessionStorage.getItem("existingUser")) {
+      setIsLoggedIn(true)
+    } else {
+      setIsLoggedIn(false)
+    }
+  }, [])
   return (
     <div>
         {['lg'].map((expand) => (
@@ -28,7 +37,7 @@ function Navigation() {
                 <Offcanvas.Body>
                   <Nav className="justify-content-end flex-grow-1 pe-3">
                     <Nav.Link href="#action1" className='active'>Home</Nav.Link>
-                    <Nav.Link href="#action2">About</Nav.Link>
+                    <Nav.Link href="#about">About</Nav.Link>
                     <NavDropdown
                       title="How it Works"
                       id={`offcanvasNavbarDropdown-expand-${expand}`}
@@ -39,20 +48,22 @@ function Navigation() {
                         ""
                       }
                     >
-                      <NavDropdown.Item href="#action3">
-                        Registration & Listing
+                      <NavDropdown.Item className='nav-dropdown'>
+                        <Link className='nav-link' to={'/registration-and-listing'}>Registration & Listing</Link>
                       </NavDropdown.Item>
-                      <NavDropdown.Item href="#action4">
-                        Collection/Delivery & Feedback
-                      </NavDropdown.Item>
-                      <NavDropdown.Divider />
-                      <NavDropdown.Item href="#action5">
-                        Highlighting Impact & Stories
+                      <NavDropdown.Item className='nav-dropdown'>
+                        <Link className='nav-link'>Highlighting Impact & Stories</Link>
                       </NavDropdown.Item>
                     </NavDropdown>
                   </Nav>
-                    <Nav.Link><Button variant="btn border border-dark border-1 rounded-3 me-2 sign-up" style={{fontWeight:"500"}} className={!screen ?"mb-2" :""}>Sign Up</Button></Nav.Link>
-                    <Nav.Link><Button variant="btn border border-dark border-1 rounded-3" style={{fontWeight:"500"}}>Log In</Button></Nav.Link>
+                    {
+                      isLoggedIn ? 
+                      <Link to={'/dashboard'}><button className='btn btn-success goto-dashboard'>Go to dashboard</button></Link> :
+                      <>
+                        <Link to={'/register'}><Button variant="btn border border-dark border-1 rounded-3 me-2" style={{fontWeight:"500"}} className={!screen ?"mb-2" :""}>Sign Up</Button></Link>
+                        <Link to={'/login'}><Button variant="btn border border-dark border-1 rounded-3" style={{fontWeight:"500"}}>Log In</Button></Link>
+                      </>
+                    }
                 </Offcanvas.Body>
               </Navbar.Offcanvas>
             </Container>
