@@ -1,81 +1,110 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import '../CSS/dashhome.css'
-import { Link } from 'react-router-dom'
 import CreateRequest from '../../Components/CreateRequest'
+import { getAllUserRequests } from '../../Services/allAPI';
 
 function DashHome() {
+    const [userRequests, setUserRequests] = useState([])
+    const fetchAllRequests = async() => {
+        const token = sessionStorage.getItem("token")
+        const reqHeader = {
+            "Content-Type":"application/json",
+            "Authorization":`Bearer ${token}`
+        }
+        const result = await getAllUserRequests(reqHeader)
+        setUserRequests(result.data)
+    }
+    useEffect(() => {
+        fetchAllRequests()
+    }, [])
     return (
         <>
-            <div className='container-fluid d-flex flex-column align-items-center'>
-                <div className="d-flex row gap-2 flex-wrap justify-content-between text-center" style={{minHeight:'150px',width:'100%'}}>
-                    <div className="border col mb-3 rounded-3 text-center d-flex flex-column p-3 border-end">
-                        <p className="fs-4" style={{fontWeight:'500'}}>Requested</p>
-                        <div className='row'>
-                            <div className="col-6 border-end d-flex justify-content-center align-items-center">Total</div>
-                            <div className="col-6 d-flex justify-content-center align-items-center" style={{color:'#531dab'}}><span className='home-badges-1'>5698</span></div>
-                        </div>
-                    </div>
-                    <div className="border mb-3 rounded-3 d-flex flex-column text-center p-3 border-end col">
-                        <p className="fs-4" style={{fontWeight:'500'}}>Accepted</p>
-                        <div className='row'>
-                            <div className="col-6 border-end d-flex justify-content-center align-items-center">Total</div>
-                            <div className="col-6 d-flex justify-content-center align-items-center" style={{color:'#08979c'}}><span className='home-badges-2'>5698</span></div>
-                        </div>
-                    </div>
-                    <div className="border mb-3 rounded-3 d-flex flex-column text-center p-3 col">
-                        <p className="fs-4" style={{fontWeight:'500'}}>Contributed</p>
-                        <div className='row'>
-                            <div className="col-6 border-end d-flex justify-content-center align-items-center">Total</div>
-                            <div className="col-6 d-flex justify-content-center align-items-center" style={{color:'#389e0d'}}><span className='home-badges-3'>5698</span></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="mt-2 row gap-3 p-0" style={{minHeight:'150px',width:'100%'}}>
-                    <div className="col-sm-12 col-md-12 col-lg-8 col-xl-8 d-flex flex-column p-3 pb-1 border rounded-3">
-                        <p className="fs-5" style={{fontWeight:'500'}}>Pending</p>
-
-                        <div className='d-flex flex-wrap justify-content-between align-items-center'>
-                            <div className="border mb-3 rounded-3 d-flex flex-column text-center p-3" style={{width:'20rem'}}>
-                                <p className="fs-5" style={{fontWeight:'500'}}>Request Submitted</p>
-                                <div className='row'>
-                                    <div className="col-6 border-end d-flex justify-content-center align-items-center">Food</div>
-                                    <div className="col-6 d-flex justify-content-center align-items-center" style={{color:'#389e0d'}}><span className='home-badges-3'>5698</span></div>
-                                </div>
-
-                                <div className='row mt-2'>
-                                    <div className="col-6 border-end d-flex justify-content-center align-items-center">Waste</div>
-                                    <div className="col-6 d-flex justify-content-center align-items-center" style={{color:'#389e0d'}}><span className='home-badges-3'>5698</span></div>
-                                </div>
-                            </div>
-                            <div className="border mb-3 rounded-3 d-flex flex-column text-center p-3" style={{width:'20rem'}}>
-                                <p className="fs-5" style={{fontWeight:'500'}}>Request accepted</p>
-                                <div className='row'>
-                                    <div className="col-6 border-end d-flex justify-content-center align-items-center">Food</div>
-                                    <div className="col-6 d-flex justify-content-center align-items-center" style={{color:'#389e0d'}}><span className='home-badges-3'>5698</span></div>
-                                </div>
-
-                                <div className='row mt-2'>
-                                    <div className="col-6 border-end d-flex justify-content-center align-items-center">Waste</div>
-                                    <div className="col-6 d-flex justify-content-center align-items-center" style={{color:'#389e0d'}}><span className='home-badges-3'>5698</span></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-sm-12 col-md-12 col-lg col-xl d-flex flex-column p-3 border rounded-3">
-                        <p className="fs-5" style={{fontWeight:'500'}}>Your Rating</p>
-                        <div className="stars d-flex flex-column justify-content-center align-items-center">
-                            <div style={{width:'5rem',height:'5rem',border:'2px solid #39c33b'}} className='m-2 d-flex justify-content-center align-items-center rounded-circle'><p className='text-center m-0 fs-1' style={{color:'#39c33b'}}>5</p></div>
-                            <div className='d-flex' style={{color:'#39c33b'}}>
-                                Very good, keep contributing
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className='mt-4'><CreateRequest/></div>
+            <div className="container-fluid rounded-3 p-3" style={{backgroundColor:'#e8f3ee'}}>
+                <p className="fs-5 m-0" style={{fontWeight:'500'}}>Home</p>
             </div>
-            
-
+            <div className='d-flex justify-content-center p-0 w-100 mb-2'>
+                <div className="container-fluid row p-0 gap-3 mt-3 w-100">
+                    <div className="col-sm-12 col-md-12 col-lg-8 col-xl-8 p-0">
+                        <div className="row gap-3 m-0">
+                            <div className="col-12 border rounded-3 p-0">
+                                <div className="profile-head fs-5 p-2 rounded-top-3" style={{backgroundColor:'#e8f3ee', fontWeight:'500'}}>Requests Made</div>
+                                <div className="row gap-2 m-0 p-0 mt-3 mb-3">
+                                    <div className="col-8" style={{color:'#7c7c7c'}}>Your Food Requests</div>
+                                    <div className="col">
+                                        <span className='home-badges-1' style={{color:'#531dab'}}>{userRequests.allFoodRequests?.length}</span>
+                                    </div>
+                                </div>
+                                <hr className='p-0 m-0' style={{borderColor: '#CDCFD0'}}/>
+                                <div className="row gap-2 m-0 p-0 mt-3 mb-3">
+                                    <div className="col-8" style={{color:'#7c7c7c'}}>Your Waste Requests</div>
+                                    <div className="col">
+                                        <span className='home-badges-1' style={{color:'#531dab'}}>{userRequests.allWasteRequest?.length}</span>
+                                    </div>
+                                </div>                                
+                            </div>
+                            <div className="col-12 border rounded-3 p-0">
+                                <div className="profile-head fs-5 p-2 rounded-top-3" style={{backgroundColor:'#e8f3ee', fontWeight:'500'}}>Requests Accepted</div>
+                                <div className="row gap-2 m-0 p-0 mt-3 mb-3">
+                                    <div className="col-8" style={{color:'#7c7c7c'}}>Food Requests You Accepted</div>
+                                    <div className="col">
+                                        <span className='home-badges-2' style={{color:'#08979c'}}>5698</span>
+                                    </div>
+                                </div>
+                                <hr className='p-0 m-0' style={{borderColor: '#CDCFD0'}}/>
+                                <div className="row gap-2 m-0 p-0 mt-3 mb-3">
+                                    <div className="col-8" style={{color:'#7c7c7c'}}>Waste Requests You Accepted</div>
+                                    <div className="col">
+                                        <span className='home-badges-2' style={{color:'#08979c'}}>5698</span>
+                                    </div>
+                                </div>                                
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col border rounded-3 p-0">
+                        <div className="profile-head fs-5 p-2 rounded-top-3" style={{backgroundColor:'#e8f3ee', fontWeight:'500'}}>Quick Links</div>
+                        <div className="row gap-2 m-0 p-0 mt-3 mb-3">
+                            <p className='m-0 text-center' style={{color:'#7c7c7c'}}>Central Government</p>
+                            <div className='col d-flex flex-column m-0 '>
+                                <button className='btn btn-success text-start btn-sm goto-dashboard m-1' style={{minWidth:'13rem'}}>Department of Food and Public Distribution</button>
+                                <button className='btn btn-success text-start btn-sm goto-dashboard m-1' style={{minWidth:'13rem'}}>Food Corporation of India</button>
+                                <button className='btn btn-success text-start btn-sm goto-dashboard m-1' style={{minWidth:'13rem'}}>FSSAI</button>
+                            </div>
+                            <p className='m-0 text-center mt-2' style={{color:'#7c7c7c'}}>Kerala Government</p>
+                            <div className='col d-flex flex-column m-0 '>
+                                <button className='btn btn-success text-start btn-sm goto-dashboard m-1' style={{minWidth:'13rem'}}>Food Safety Kerala</button>
+                                <button className='btn btn-success text-start btn-sm goto-dashboard m-1' style={{minWidth:'13rem'}}>Civil Supplies and Consumer Affairs</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col border rounded-3 p-0">
+                        <div className="profile-head fs-5 p-2 rounded-top-3" style={{backgroundColor:'#e8f3ee', fontWeight:'500'}}>Contact us</div>
+                        <div className="row gap-2 m-0 p-0 mt-3 mb-3">
+                            <p className='m-0 text-center' style={{color:'#7c7c7c'}}>If you encounter any issues with the food or service, please don't hesitate to contact us. We're here to help!</p>
+                            <div className='col d-flex flex-column m-0 '>
+                                <div className='row gap-2 m-0 p-0'>
+                                    <div className="col-sm-12 col-md-12 col-lg col-xl d-flex flex-column rounded-3 p-2 align-items-center mb-3" style={{backgroundColor:'#e8f3ee'}}>
+                                        <p className='fs-5 m-0' style={{fontWeight:'500'}}>Call us</p>
+                                        <p className='m-0 text-center' style={{color:'#7c7c7c'}}>+91 7592033013</p>
+                                    </div>
+                                    <div className="col-sm-12 col-md-12 col-lg col-xl d-flex flex-column rounded-3 p-2 align-items-center mb-3" style={{backgroundColor:'#e8f3ee'}}>
+                                        <p className='fs-5 m-0' style={{fontWeight:'500'}}>Email us</p>
+                                        <p className='m-0 text-center' style={{color:'#7c7c7c'}}>support@smile.org</p>
+                                    </div>
+                                    <div className="col-sm-12 col-md-12 col-lg col-xl d-flex flex-column rounded-3 p-2 align-items-center mb-3" style={{backgroundColor:'#e8f3ee'}}>
+                                        <p className='fs-5 m-0' style={{fontWeight:'500'}}>Official Address</p>
+                                        <p className='m-0 text-center' style={{color:'#7c7c7c'}}>
+                                            Smile Organization <br />
+                                            2nd Floor 104,
+                                            ABC Building,
+                                            Thrissur 680601
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </>
     )
 }

@@ -23,9 +23,10 @@ function Login() {
             toast.warning("Please enter email and password")
         } else {
             const result = await loginAPI(loginCredentials)
+            console.log(result);
             if (result.status === 200) {
-                sessionStorage.setItem("existingUser", JSON.stringify(result.data.isUserExists))
-                sessionStorage.setItem("token", result.data.token)
+                sessionStorage.setItem("existingUser", JSON.stringify(result.data?.isUserExists))
+                sessionStorage.setItem("token", result.data?.token)
                 navigate('/')
             } else {
                 toast.error(result.response.data)

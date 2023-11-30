@@ -115,8 +115,8 @@ function Home() {
 
         <div className='mb-5'>
           <p className='m-0 fs-3 sorted-heading'>Your Impact</p>
-          <div className="row mb-4">
-            <div className="col p-3 rounded-3 text-light" style={{backgroundColor:'#16a34a'}}>
+          <div className="row gap-3 mb-4">
+            <div className="col-sm-12 col-md-12 col-lg col-xl p-3 rounded-3 text-light" style={{backgroundColor:'#16a34a'}}>
               <p className='fs-5 m-0' style={{fontWeight:'500'}}>Purposeful Sharing</p>
               Share surplus food or waste and make a difference.
               <p className='fs-5 m-0 mt-3' style={{fontWeight:'500'}}>Community-driven</p>
@@ -124,7 +124,7 @@ function Home() {
               <p className='fs-5 m-0 mt-3' style={{fontWeight:'500'}}>Responsible Change</p>
               Be part of a movement that reshapes waste into opportunity.
             </div>
-            <div className="col-4 d-flex flex-column align-items-end justify-content-end">
+            <div className="col-sm-12 col-md-12 col-lg-4 col-xl-4 d-flex flex-column align-items-end justify-content-end">
               <span className='fs-3' style={{fontWeight:'500'}}>Join Smile and let's redefine waste together!</span>
               <button className='btn border-0 text-light w-100 mt-3' style={{backgroundColor:'#16a34a'}}>Join Now</button>
             </div>

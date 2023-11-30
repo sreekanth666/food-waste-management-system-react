@@ -25,3 +25,8 @@ export const createWasteRequestAPI = async(reqBody, reqHeader) => {
 export const getAllUserRequests = async(reqHeader) => {
     return await commonAPI("GET", `${base_url}/request/all`, "", reqHeader)
 }
+
+// Get requests based on pincode
+export const getRequestsPincode = async(reqBody, reqHeader) => {
+    return await commonAPI("POST", `${base_url}/requests/pincode/all`, reqBody, reqHeader)
+}

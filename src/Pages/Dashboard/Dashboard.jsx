@@ -7,16 +7,18 @@ import DashHome from './DashHome'
 import '../CSS/dashboard.css'
 import { useMediaQuery } from 'react-responsive'
 import { BottomNavigation, BottomNavigationAction } from '@mui/material'
-import DashHomeMobile from '../DashboardMobile/DashHomeMobile'
-import RequestsMobile from '../DashboardMobile/RequestsMobile'
-import AcceptedMobile from '../DashboardMobile/AcceptedMobile'
-import ProfileMobile from '../DashboardMobile/ProfileMobile'
+import { Modal, Button } from 'react-bootstrap'
 
 function Dashboard() {
     const isTabletOrMobile = useMediaQuery({ minWidth: 1224 })
     const [selectedPage, setSelectedPage] = useState("home")
     const [selectedPageMobile, setSelectedPageMobile] = useState("home")
     const [value, setValue] = React.useState(0);
+
+    // Logout Modal control
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     return (
         <>
@@ -38,7 +40,7 @@ function Dashboard() {
                                 <div className="option p-3 rounded-3 mt-2"  onClick={() => setSelectedPage("profile")} style={selectedPage === "profile"?{backgroundColor:'#16a34a',color:'white'}:{backgroundColor:'white'}}>
                                     <p className='m-0' style={{fontWeight:'500'}}><i class="fa-solid fa-user"></i> Profile</p>
                                 </div>
-                                <div className="option bg-white p-3 rounded-3 mt-2">
+                                <div className="option bg-white p-3 rounded-3 mt-2" onClick={handleShow}>
                                     <p className='m-0' style={{fontWeight:'500'}}><i class="fa-solid fa-right-from-bracket"></i> Logout</p>
                                 </div>
                             </div>
@@ -54,11 +56,11 @@ function Dashboard() {
                 :
                 <>
                     <div className='container-fluid p-0' style={{minHeight:'90dvh'}}>
-                        <div className="container-fluid bg-white mb-4 rounded-3 dash-panel" style={{overflowY:'scroll'}}>
-                            {selectedPageMobile === "home" ? <DashHomeMobile /> : null}
-                            {selectedPageMobile === "request" ? <RequestsMobile /> : null}
-                            {selectedPageMobile === "accepted" ? <AcceptedMobile /> : null}
-                            {selectedPageMobile === "profile" ? <ProfileMobile /> : null}
+                        <div className="container-fluid bg-white mb-4 mt-3 rounded-3 dash-panel">
+                            {selectedPageMobile === "home" ? <DashHome /> : null}
+                            {selectedPageMobile === "request" ? <Requests /> : null}
+                            {selectedPageMobile === "accepted" ? <Accepted /> : null}
+                            {selectedPageMobile === "profile" ? <Profile /> : null}
                         </div>
                     </div>
                         <BottomNavigation
@@ -77,6 +79,29 @@ function Dashboard() {
                         </BottomNavigation>
                 </>
             }
+
+            {/* Logout modal */}
+            <Modal
+                show={show}
+                onHide={handleClose}
+                size="md"
+                aria-labelledby="contained-modal-title-vcenter"
+                centered
+            >
+                <Modal.Body className='fs-4 text-center'>
+                    Are you sure you want to log out?
+                    <br />
+                    <div className="mt-1 mb-1" style={{color:'#7c7c7c',fontSize:'small'}}><i class="fa-solid fa-triangle-exclamation"></i> Logging out will end your current session</div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Cancel
+                    </Button>
+                    <Button variant="primary btn-danger" onClick={handleClose}>
+                        Logout
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </>
     )
 }

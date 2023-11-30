@@ -34,14 +34,16 @@ function CreateRequest() {
         userId: "",
         address: "",
         name: "",
-        pincode: ""
+        pincode: "",
+        phone: "",
+        email: ""
     })
     useEffect(() => {
         if (sessionStorage.getItem("existingUser")) {
             const userSessionData = JSON.parse(sessionStorage.getItem("existingUser"))
-            const {_id, address, city, district, state, pincode, username} = userSessionData
+            const {_id, address, city, district, state, pincode, phone, email, username} = userSessionData
             const fullAddress = `${address}, ${city}, ${district}, ${state}-${pincode}`
-            setUserDetails({...userDetails, userId:_id, address: fullAddress, name: username, pincode: pincode})
+            setUserDetails({...userDetails, userId:_id, address: fullAddress, name: username, pincode: pincode, phone: phone, email: email})
         } else {
             
         }
@@ -60,6 +62,8 @@ function CreateRequest() {
         description: "",
         address: "",
         pincode: "",
+        phone: "",
+        email: "",
         accepted: {
             
         }
@@ -73,7 +77,9 @@ function CreateRequest() {
             postedTime: date.format(today, 'hh:mm A'),
             postedDate: date.format(today, 'DD/MM/YYYY'),
             username: userDetails.name,
-            pincode: userDetails.pincode
+            pincode: userDetails.pincode,
+            phone: userDetails.phone,
+            email: userDetails.email
         }))
         setWasteReqDetails(prevWasteReqDetails => ({
             ...prevWasteReqDetails,
@@ -82,7 +88,9 @@ function CreateRequest() {
             postedTime: date.format(today, 'hh:mm A'),
             postedDate: date.format(today, 'DD/MM/YYYY'),
             username: userDetails.name,
-            pincode: userDetails.pincode
+            pincode: userDetails.pincode,
+            phone: userDetails.phone,
+            email: userDetails.email
         }))
     },[userDetails, today])
 
@@ -99,6 +107,8 @@ function CreateRequest() {
         description: "",
         address: "",
         pincode: "",
+        phone: "",
+        email: "",
         accepted: {
             
         }
@@ -129,6 +139,8 @@ function CreateRequest() {
                     description: "",
                     address: "",
                     pincode: "",
+                    phone: "",
+                    email: "",
                     accepted: {
                         
                     }
@@ -158,6 +170,8 @@ function CreateRequest() {
                     description: "",
                     address: "",
                     pincode: "",
+                    phone: "",
+                    email: "",
                     accepted: {
                         
                     }
@@ -188,8 +202,8 @@ function CreateRequest() {
     return (
         <>
             <ToastContainer />
-            <button className='btn btn-success goto-dashboard m-2' onClick={handleFoodShow}>Create Food Request</button>
-            <button className='btn btn-success goto-dashboard m-2' onClick={handleWasteShow}>Create Waste Request</button>
+            <button className='btn btn-success goto-dashboard m-2' onClick={handleFoodShow} style={{minWidth:'13rem'}}>Create Food Request</button>
+            <button className='btn btn-success goto-dashboard m-2' onClick={handleWasteShow} style={{minWidth:'13rem'}}>Create Waste Request</button>
 
             {/* Food request */}
             <Modal
