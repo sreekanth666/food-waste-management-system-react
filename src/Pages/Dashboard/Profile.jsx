@@ -5,8 +5,10 @@ import ChangePassword from './ChangePassword';
 import { toast } from 'react-toastify';
 import { userApiHandleContext } from '../../Context/ContextShare';
 import { useMediaQuery } from 'react-responsive';
+import { useNavigate } from 'react-router-dom'
 
 function Profile() {
+    const navigate = useNavigate()
     const isTabletOrMobile = useMediaQuery({ minWidth: 1224 })
     const {sessionUpdate, setSessionUpdate} = useContext(userApiHandleContext)
     const [userDetails, setUserDetails] = useState({})
