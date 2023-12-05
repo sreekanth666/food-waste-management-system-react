@@ -1,9 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Modal, Button } from 'react-bootstrap';
 import { TelegramIcon, TelegramShareButton, TwitterShareButton, WhatsappIcon, WhatsappShareButton, XIcon } from 'react-share'
-
+import { acceptRequestAPI } from '../Services/allAPI';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import date from 'date-and-time'
+import { userApiHandleContext } from '../Context/ContextShare';
 
 function AllWasteRequests({request}) {
+    const {update, setUpdate} = useContext(userApiHandleContext)
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -16,26 +21,69 @@ function AllWasteRequests({request}) {
         setShareShow(true)
     }
 
-    console.log(request);
+    // Time and date
+    const [today, setToday] = useState(new Date());
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            setToday(new Date());
+        }, 1000);
+        return () => {
+            clearInterval(intervalId);
+        };
+    }, []);
+
+    const userDetails = JSON.parse(sessionStorage.getItem("existingUser"))
+
+    const [acceptedDetails, setAcceptedDetails] = useState({})
+    const token = sessionStorage.getItem("token")
+    const reqId = request._id
+    const address = `${userDetails.address}, ${userDetails.city}, ${userDetails.district}, ${userDetails.state}, ${userDetails.pincode}`
+    const reqHeader = {
+        "Content-Type":"application/json",
+        "Authorization":`Bearer ${token}`
+    }
+
+    const handleAccept = async() => {
+        const accepted = {
+            acceptedUserId: userDetails?._id,
+            acceptedPhone: userDetails?.phone,
+            acceptedName: userDetails?.username,
+            acceptedEmail: userDetails?.email,
+            acceptedAddress: address,
+            acceptedTime: date.format(today, 'hh:mm A'),
+            acceptedDate: date.format(today, 'DD/MM/YYYY'),
+            reqType: "waste",
+            status: "Accepted"
+        }
+        const result = await acceptRequestAPI(reqId, accepted, reqHeader)
+        if (result.status === 200) {
+            toast.success("Waste request accepted")
+            setUpdate(result)
+            handleClose()
+        } else {
+            toast.error("An error occurred")
+        }
+    }
+
     return (
         <>
             {
-                request && 
+                request.status === "Created" && 
                 <div>
                     <div className="card rounded-3 border-0 m-2" style={{width: "13rem"}}>
-                        <div className="card-body ps-0">
+                        <div className="card-body ps-0 ">
                             <h5 className="card-title">
                                 {request.address}
                             </h5>
-                            <p className="card-text" style={{fontSize:'small', color:'#7c7c7c'}}>Requested by {request.username}<br />{request.postedDate}<br />{request.postedTime}</p>
-                            </div>
-                            <ul class="list-group list-group" style={{fontSize:'small'}}>
-                                <li className="list-group-item">{request.quantity}</li>
-                                <li className="list-group-item">{request.type}</li>
-                            </ul>
-                            <div className="ps-0 card-body text-light d-flex justify-content-start align-items-center text-center">
-                                <button className='sorted-btn btn btn-success me-2' onClick={handleShow}>Accept</button>
-                                <button className='sorted-btn btn btn-success' onClick={() => handleShareShow(request)}><i class="fa-solid fa-share"></i></button>
+                            <p className="card-text m-0" style={{fontSize:'small', color:'#7c7c7c'}}>Requested by {request.username}<br />{request.postedDate}<br />{request.postedTime}</p>
+                        </div>
+                        <ul class="list-group list-group m-0" style={{fontSize:'small'}}>
+                            <li className="list-group-item">{request.quantity}</li>
+                            <li className="list-group-item">{request.type}</li>
+                        </ul>
+                        <div className="ps-0 card-body text-light d-flex justify-content-start align-items-center text-center">
+                            <button className='sorted-btn btn btn-success me-2' onClick={handleShow}>Accept</button>
+                            <button className='sorted-btn btn btn-success' onClick={() => handleShareShow(request)}><i class="fa-solid fa-share"></i></button>
                         </div>
                     </div>
                 </div>
@@ -53,28 +101,32 @@ function AllWasteRequests({request}) {
                 </Modal.Header>
                 <Modal.Body>
                     <table className='confirmation-table table table-striped border-0'>
-                        <tbody>
+                    <tbody>
                             <tr>
                                 <th className='border-0'>Requested by</th>
-                                <td className='border-0'>Ravi</td>
+                                <td className='border-0'>{request.username}</td>
                             </tr>
                             <tr>
                                 <th className='border-0'>Address</th>
-                                <td className='border-0'>
-                                    123, ABC Street <br />
-                                    Trivandrum, Kerala, India <br />
-                                    695001
-                                </td>
+                                <td className='border-0'>{request.address}</td>
                             </tr>
                             <tr>
                                 <th className='border-0'>Requested Items</th>
                                 <td className='border-0'>
-                                    Food (Pack of 2)
+                                    {request.packs} Pack(s)
                                 </td>
                             </tr>
                             <tr>
-                                <th className='border-0'>Additional Details</th>
-                                <td className='border-0'>Vegetarian</td>
+                                <th className='border-0'>Preference</th>
+                                <td className='border-0'>{request.type}</td>
+                            </tr>
+                            <tr>
+                                <th className='border-0'>Additional information</th>
+                                <td className='border-0'>{request.description}</td>
+                            </tr>
+                            <tr>
+                                <th className='border-0'>Delivery information</th>
+                                <td className='border-0 text-danger'>{request.delivery === 'deliver' ? "You need to deliver the food to the destination" : "Requested person will pickup the food from your default location"}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -84,7 +136,7 @@ function AllWasteRequests({request}) {
                 </Modal.Body>
                 <Modal.Footer>
                 <Button variant="secondary border-0" onClick={handleClose}>Cancel</Button>
-                <Button variant="success" className='sorted-btn'>Confirm</Button>
+                <Button variant="success" className='sorted-btn' onClick={handleAccept}>Confirm</Button>
                 </Modal.Footer>
             </Modal>
 

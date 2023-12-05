@@ -1,10 +1,19 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Modal, Button } from 'react-bootstrap';
 import { TelegramIcon, TelegramShareButton, TwitterShareButton, WhatsappIcon, WhatsappShareButton, XIcon } from 'react-share'
+import { acceptRequestAPI } from '../Services/allAPI';
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
+import date from 'date-and-time'
+import { userApiHandleContext } from '../Context/ContextShare';
 
 function AllFoodRequests({request}) {
+    const {update, setUpdate} = useContext(userApiHandleContext)
     const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
+    const handleClose = () => {
+        setShow(false);
+        setAcceptedDetails({})
+    }
     const handleShow = () => setShow(true);
 
     const [shareShow, setShareShow] = useState(false);
@@ -15,11 +24,56 @@ function AllFoodRequests({request}) {
         setShareShow(true)
     }
 
-    console.log(shareData);
+    // Time and date
+    const [today, setToday] = useState(new Date());
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            setToday(new Date());
+        }, 1000);
+        return () => {
+            clearInterval(intervalId);
+        };
+    }, []);
+
+    const userDetails = JSON.parse(sessionStorage.getItem("existingUser"))
+
+    const [acceptedDetails, setAcceptedDetails] = useState({})
+    const token = sessionStorage.getItem("token")
+    const reqId = request._id
+    const address = `${userDetails.address}, ${userDetails.city}, ${userDetails.district}, ${userDetails.state}, ${userDetails.pincode}`
+    const reqHeader = {
+        "Content-Type":"application/json",
+        "Authorization":`Bearer ${token}`
+    }
+
+    const handleAccept = async() => {
+        const accepted = {
+            acceptedUserId: userDetails?._id,
+            acceptedPhone: userDetails?.phone,
+            acceptedName: userDetails?.username,
+            acceptedEmail: userDetails?.email,
+            acceptedAddress: address,
+            acceptedTime: date.format(today, 'hh:mm A'),
+            acceptedDate: date.format(today, 'DD/MM/YYYY'),
+            reqType: "food",
+            status: "Accepted"
+        }
+        const result = await acceptRequestAPI(reqId, accepted, reqHeader)
+        if (result.status === 200) {
+            toast.success("Food request accepted")
+            setUpdate(result)
+            handleClose()
+        } else {
+            toast.error("An error occurred")
+        }
+    }
+
+    // TEST
+    console.log(request);
     return (
         <>
             {
-                request &&
+                request.status === "Created" &&
                 <div>
                     <div className="card rounded-3 border-0 m-2" style={{width: "13rem"}}>
                         <div className="card-body ps-0">
@@ -55,25 +109,29 @@ function AllFoodRequests({request}) {
                         <tbody>
                             <tr>
                                 <th className='border-0'>Requested by</th>
-                                <td className='border-0'>Ravi</td>
+                                <td className='border-0'>{request.username}</td>
                             </tr>
                             <tr>
                                 <th className='border-0'>Address</th>
-                                <td className='border-0'>
-                                    123, ABC Street <br />
-                                    Trivandrum, Kerala, India <br />
-                                    695001
-                                </td>
+                                <td className='border-0'>{request.address}</td>
                             </tr>
                             <tr>
                                 <th className='border-0'>Requested Items</th>
                                 <td className='border-0'>
-                                    Food (Pack of 2)
+                                    {request.packs} Pack(s)
                                 </td>
                             </tr>
                             <tr>
-                                <th className='border-0'>Additional Details</th>
-                                <td className='border-0'>Vegetarian</td>
+                                <th className='border-0'>Preference</th>
+                                <td className='border-0'>{request.preference}</td>
+                            </tr>
+                            <tr>
+                                <th className='border-0'>Additional information</th>
+                                <td className='border-0'>{request.description}</td>
+                            </tr>
+                            <tr>
+                                <th className='border-0'>Delivery information</th>
+                                <td className='border-0 text-danger'>{request.delivery === 'deliver' ? "You need to deliver the food to the destination" : "Requested person will pickup the food from your default location"}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -83,7 +141,7 @@ function AllFoodRequests({request}) {
                 </Modal.Body>
                 <Modal.Footer>
                 <Button variant="secondary border-0" onClick={handleClose}>Cancel</Button>
-                <Button variant="success" className='sorted-btn'>Confirm</Button>
+                <Button variant="success" className='sorted-btn' onClick={handleAccept}>Confirm</Button>
                 </Modal.Footer>
             </Modal>
 

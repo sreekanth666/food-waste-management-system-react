@@ -1,24 +1,53 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import CreateRequest from '../../Components/CreateRequest'
-import { getAllUserRequests } from '../../Services/allAPI'
+import { userApiHandleContext } from '../../Context/ContextShare';
+import FoodReqEdit from '../../Components/FoodReqEdit';
+import { deleteFoodRequestAPI, deleteWasteRequestAPI } from '../../Services/allAPI';
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
+import WasteReqEdit from '../../Components/WasteReqEdit';
+import AcceptedUserDetails from '../../Components/AcceptedUserDetails';
 
 function Requests() {
+    const {update, setUpdate} = useContext(userApiHandleContext)
+    const {requestsMadeByUser, setRequestMadeByUser} = useContext(userApiHandleContext)
     const [userRequests, setUserRequests] = useState([])
-    const fetchAllRequests = async() => {
+    useEffect(() => {
+        setUserRequests(requestsMadeByUser)
+    }, [requestsMadeByUser])
+
+    // Delete food request
+    const deleteFoodRequest = async(reqId) => {
         const token = sessionStorage.getItem("token")
         const reqHeader = {
             "Content-Type":"application/json",
             "Authorization":`Bearer ${token}`
         }
-        const result = await getAllUserRequests(reqHeader)
-        setUserRequests(result.data)
+        const result = await deleteFoodRequestAPI(reqId, reqHeader)
+        if (result.status === 200) {
+            toast.success("Request deleted")
+            setUpdate(result)
+        } else {
+            toast.error("An error occurred")
+        }
     }
-    useEffect(() => {
-        fetchAllRequests()
-    }, [])
 
-    // TEST
-    console.log(userRequests);
+    // Delete waste request
+    const deleteWasteRequest = async(reqId) => {
+        const token = sessionStorage.getItem("token")
+        const reqHeader = {
+            "Content-Type":"application/json",
+            "Authorization":`Bearer ${token}`
+        }
+        const result = await deleteWasteRequestAPI(reqId, reqHeader)
+        if (result.status === 200) {
+            toast.success("Request deleted")
+            setUpdate(result)
+        } else {
+            toast.error("An error occurred")
+        }
+    }
+
     return (
         <>
             <div className="container-fluid rounded-3 p-3" style={{backgroundColor:'#e8f3ee'}}>
@@ -39,7 +68,7 @@ function Requests() {
                                                 <tr>
                                                 <th scope="col">Request</th>
                                                 <th scope="col">Date & Time</th>
-                                                <th scope="col">Status</th>
+                                                <th scope="col" className='text-center'>Status</th>
                                                 <th scope="col">Action</th>
                                                 </tr>
                                             </thead>
@@ -49,11 +78,11 @@ function Requests() {
                                                         <tr>
                                                             <td>{request.preference}</td>
                                                             <td>{request.postedDate} <br /> {request.postedTime}</td>
-                                                            <td>{request.status}</td>
+                                                            <td className='text-center'>{request.status} {request.status === "Accepted" ? <AcceptedUserDetails accepted = {request}/> : null}</td>
                                                             <td>
                                                                 <div className='d-flex'>
-                                                                    <button className='btn btn-success goto-dashboard btn-sm me-1'>Edit</button>
-                                                                    <button className='btn btn-success goto-dashboard btn-sm'>Delete</button>
+                                                                    <FoodReqEdit request = {request}/>
+                                                                    <button className='btn btn-success goto-dashboard btn-sm' onClick={() => deleteFoodRequest(request._id)}>Delete</button>
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -79,7 +108,7 @@ function Requests() {
                                                 <tr>
                                                 <th scope="col">Request</th>
                                                 <th scope="col">Date & Time</th>
-                                                <th scope="col">Status</th>
+                                                <th scope="col" className='text-center'>Status</th>
                                                 <th scope="col">Action</th>
                                                 </tr>
                                             </thead>
@@ -89,11 +118,11 @@ function Requests() {
                                                         <tr>
                                                             <td>{request.type}</td>
                                                             <td>{request.postedDate} <br /> {request.postedTime}</td>
-                                                            <td>{request.status}</td>
+                                                            <td className='text-center'>{request.status} {request.status === "Accepted" ? <AcceptedUserDetails accepted = {request}/> : null}</td>
                                                             <td>
                                                                 <div className='d-flex'>
-                                                                    <button className='btn btn-success goto-dashboard btn-sm me-1'>Edit</button>
-                                                                    <button className='btn btn-success goto-dashboard btn-sm'>Delete</button>
+                                                                    <WasteReqEdit request={request}/>
+                                                                    <button className='btn btn-success goto-dashboard btn-sm' onClick={() => deleteWasteRequest(request._id)}>Delete</button>
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -126,21 +155,3 @@ function Requests() {
 
 export default Requests
 
-{/* <tr>
-<th scope="row">2</th>
-<td>Waste Pickup</td>
-<td>11/09/2023</td>
-<td>
-<div className="p-1 rounded-pill text-center" style={{border:'1px solid #b7eb8f',backgroundColor:'#f6ffed',color:'#389e0d'}}>Accepted</div>
-</td>
-<td><button class="btn rounded-pill btn-danger pt-1 pb-1 disabled">Delete</button></td>  
-</tr>
-<tr>
-<th scope="row">3</th>
-<td>Waste Pickup</td>
-<td>05/08/2023</td>
-<td>
-<div className="p-1 rounded-pill text-center" style={{border:'1px solid #ffa39e',backgroundColor:'#fff1f0',color:'#cf1322'}}>Expired</div>
-</td>
-<td><button class="btn rounded-pill btn-danger pt-1 pb-1 disabled">Delete</button></td>
-</tr> */}

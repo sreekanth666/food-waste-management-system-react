@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import Requests from './Requests'
 import Accepted from './Accepted'
 import Profile from './Profile'
@@ -8,18 +8,88 @@ import '../CSS/dashboard.css'
 import { useMediaQuery } from 'react-responsive'
 import { BottomNavigation, BottomNavigationAction } from '@mui/material'
 import { Modal, Button } from 'react-bootstrap'
+import { getAllUserAcceptedRequests, getAllUserRequests, getRequestsPincode } from '../../Services/allAPI'
+import { userApiHandleContext } from '../../Context/ContextShare'
+import { Link, useNavigate } from 'react-router-dom'
 
 function Dashboard() {
+    const navigate = useNavigate()
     const isTabletOrMobile = useMediaQuery({ minWidth: 1224 })
     const [selectedPage, setSelectedPage] = useState("home")
     const [selectedPageMobile, setSelectedPageMobile] = useState("home")
     const [value, setValue] = React.useState(0);
+
+    // Handle logout
+    const logout = () => {
+        sessionStorage.removeItem("existingUser")
+        sessionStorage.removeItem("token")
+        navigate("/")
+    }
 
     // Logout Modal control
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
+    // -----------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------
+    // ALL API CASHING LOGIC
+    // -----------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------
+    // All requests made by the user
+    const {requestsMadeByUser, setRequestMadeByUser, update, setUpdate} = useContext(userApiHandleContext)
+    const fetchAllRequests = async() => {
+        const token = sessionStorage.getItem("token")
+        const reqHeader = {
+            "Content-Type":"application/json",
+            "Authorization":`Bearer ${token}`
+        }
+        const result = await getAllUserRequests(reqHeader)
+        setRequestMadeByUser(result?.data)
+    }
+    // -----------------------------------------------------------------------------
+
+    // All requests under user default pincode
+    const {getAllRequestsByPincode, setGetAllRequestsByPincode} = useContext(userApiHandleContext)
+    const existingUser = JSON.parse(sessionStorage.getItem('existingUser'))
+    const pincode = existingUser?.pincode
+    const token = sessionStorage.getItem("token")
+    const reqBody = {
+        "pincode":pincode
+    }
+    const reqHeader = {
+        "Content-Type":"application/json",
+        "Authorization":`Bearer ${token}`
+    }
+    const getAllRequestsPincode = async() => {
+        const result = await getRequestsPincode(reqBody, reqHeader)
+        setGetAllRequestsByPincode(result?.data);
+    }
+    // -----------------------------------------------------------------------------
+
+    // Get all accepted requests
+    const {acceptedRequestsByUser, setAcceptedRequestsByUser} = useContext(userApiHandleContext)
+    const getUserAcceptedRequests = async() => {
+        console.log("entered");
+        const reqHeader = {
+            "Content-Type":"application/json",
+            "Authorization":`Bearer ${token}`
+        }
+        try {
+            const result = await getAllUserAcceptedRequests(reqHeader);
+            setAcceptedRequestsByUser(result?.data);
+        } catch (error) {
+            console.error("Error fetching user accepted requests:", error);
+        }
+    }
+    // -----------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------
+    
+    useEffect(() => {
+        fetchAllRequests()
+        getAllRequestsPincode()
+        getUserAcceptedRequests()
+    }, [update])
     return (
         <>
             {
@@ -35,7 +105,7 @@ function Dashboard() {
                                     <p className='m-0' style={{fontWeight:'500'}}><i class="fa-solid fa-paper-plane"></i> Requests</p>
                                 </div>
                                 <div className="option p-3 rounded-3 mt-2" onClick={() => setSelectedPage("accepted")} style={selectedPage === "accepted"?{backgroundColor:'#16a34a',color:'white'}:{backgroundColor:'white'}}>
-                                    <p className='m-0' style={{fontWeight:'500'}}><i class="fa-solid fa-circle-check"></i> Accepted Items</p>
+                                    <p className='m-0' style={{fontWeight:'500'}}><i class="fa-solid fa-circle-check"></i> Accept</p>
                                 </div>
                                 <div className="option p-3 rounded-3 mt-2"  onClick={() => setSelectedPage("profile")} style={selectedPage === "profile"?{backgroundColor:'#16a34a',color:'white'}:{backgroundColor:'white'}}>
                                     <p className='m-0' style={{fontWeight:'500'}}><i class="fa-solid fa-user"></i> Profile</p>
@@ -43,6 +113,11 @@ function Dashboard() {
                                 <div className="option bg-white p-3 rounded-3 mt-2" onClick={handleShow}>
                                     <p className='m-0' style={{fontWeight:'500'}}><i class="fa-solid fa-right-from-bracket"></i> Logout</p>
                                 </div>
+                                <Link to="/" style={{textDecoration:'none'}} className='text-dark'>
+                                    <div className="option bg-white p-3 rounded-3 mt-2">
+                                        <p className='m-0' style={{fontWeight:'500'}}><i class="fa-solid fa-door-open"></i> Go to home</p>
+                                    </div>
+                                </Link>
                             </div>
                         </div>
                         <div className="container-fluid bg-white mt-4 mb-4 rounded-3 pt-4 d-flex flex-column align-items-center dash-panel" style={{overflowY:'scroll'}}>
@@ -97,7 +172,7 @@ function Dashboard() {
                     <Button variant="secondary" onClick={handleClose}>
                         Cancel
                     </Button>
-                    <Button variant="primary btn-danger" onClick={handleClose}>
+                    <Button variant="primary btn-danger" onClick={logout}>
                         Logout
                     </Button>
                 </Modal.Footer>

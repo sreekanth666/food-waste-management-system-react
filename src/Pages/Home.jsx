@@ -2,18 +2,43 @@ import React, { useEffect, useState } from 'react'
 import Navigation from '../Components/Navigation'
 import Footer from '../Components/Footer'
 import './CSS/home.css'
-import SortedReqList from '../Components/SortedReqList'
 import kidsSmiling from '../Assets/kids-smiling.jpg'
 import { Link } from 'react-router-dom'
+import { getAllActiveRequests } from '../Services/allAPI'
 
 function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  // Get all active requests
+  const [allActiveRequests, setAllActiveRequests] = useState([])
+  const fetchActiveRequests = async() => {
+    const result = await getAllActiveRequests()
+    setAllActiveRequests(result.data)
+  }
+  const activeFoodRequests = allActiveRequests.allFoodRequests?.filter(requests => (
+    requests.status === 'Created'
+  ))
+  const activeWasteRequests = allActiveRequests.allWasteRequests?.filter(requests => (
+    requests.status === 'Created'
+  ))
+
+  // All delivered meals
+  const deliveredFoodRequests = allActiveRequests.allFoodRequests?.filter(requests => (
+    requests.status === 'Delivered'
+  ))
+  const deliveredWasteRequests = allActiveRequests.allWasteRequests?.filter(requests => (
+    requests.status === 'Delivered'
+  ))
+  const totalDelivered = (deliveredFoodRequests?.length) + (deliveredWasteRequests?.length)
+
   useEffect(() => {
     if (sessionStorage.getItem("existingUser")) {
       setIsLoggedIn(true)
     } else {
       setIsLoggedIn(false)
     }
+
+    fetchActiveRequests()
   }, [])
   return (
     <>
@@ -30,10 +55,10 @@ function Home() {
                 <p className='m-0 home-card-header fs-4'>Total Active Food Requests</p>
                 <div className='row'>
                   <div className='col-8'>
-                    <p className='fs-1 m-0'>1265</p>
+                    <p className='fs-1 m-0'>{activeFoodRequests?.length}</p>
                   </div>
                   <div className='col-4 d-flex justify-content-center align-items-center'>
-                    <p className='m-0'><span className='home-hidden'>Explore</span><i class="ms-3 fa-solid fa-chevron-right"></i></p>
+                    <Link to={isLoggedIn ? "/dashboard" : "/login"} style={{textDecoration:'none'}} className='text-dark'><p className='m-0'><span className='home-hidden'>Explore</span><i class="ms-3 fa-solid fa-chevron-right"></i></p></Link>
                   </div>
                 </div>
               </div>
@@ -43,10 +68,10 @@ function Home() {
                   <p className='m-0 home-card-header fs-4'>Total Active Waste Requests</p>
                   <div className='row'>
                     <div className='col-8'>
-                      <p className='fs-1 m-0'>154</p>
+                      <p className='fs-1 m-0'>{activeWasteRequests?.length}</p>
                     </div>
                     <div className='col-4 d-flex justify-content-center align-items-center'>
-                      <p className='m-0'><span className='home-hidden'>Explore</span><i class="ms-3 fa-solid fa-chevron-right"></i></p>
+                      <Link to={isLoggedIn ? "/dashboard" : "/login"} style={{textDecoration:'none'}} className='text-dark'><p className='m-0'><span className='home-hidden'>Explore</span><i class="ms-3 fa-solid fa-chevron-right"></i></p></Link>
                     </div>
                   </div>
               </div>
@@ -65,7 +90,7 @@ function Home() {
             <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6 text-light">
               <div className="smiles-delivered rounded-3 p-3">
                       <div className='d-flex justify-content-center align-items-center'>
-                      <span className='fs-1 m-0'><i class="fa-regular fa-face-smile"></i> 12653</span> <span className='ms-3 fs-4'>Meals delivered</span>
+                      <span className='fs-1 m-0'><i class="fa-regular fa-face-smile"></i> {totalDelivered}</span> <span className='ms-3 fs-4'>Smiles delivered</span>
                   </div>
               </div>
             </div>
@@ -74,7 +99,7 @@ function Home() {
       </div>
 
       {/* Requests list */}
-      <SortedReqList />
+      <h1>Special area</h1>
 
       {/* About us */}
       <div className="container" id='about'>
@@ -126,7 +151,7 @@ function Home() {
             </div>
             <div className="col-sm-12 col-md-12 col-lg-4 col-xl-4 d-flex flex-column align-items-end justify-content-end">
               <span className='fs-3' style={{fontWeight:'500'}}>Join Smile and let's redefine waste together!</span>
-              <button className='btn border-0 text-light w-100 mt-3' style={{backgroundColor:'#16a34a'}}>Join Now</button>
+              <Link className='w-100 mt-3' to='/register'><button className='btn border-0 text-light w-100 rounded-3' style={{backgroundColor:'#16a34a',fontWeight:'500'}}>Join Now</button></Link>
             </div>
           </div>
         </div>

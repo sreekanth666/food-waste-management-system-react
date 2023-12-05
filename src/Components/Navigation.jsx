@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom'
 
 function Navigation() {
   const screen = useMediaQuery({maxWidth: 768})
-  console.log(screen);
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   useEffect(() => {
     if (sessionStorage.getItem("existingUser")) {

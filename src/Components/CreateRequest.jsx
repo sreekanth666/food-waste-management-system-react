@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Modal, Button, Form } from 'react-bootstrap';
 import date from 'date-and-time'
 import { createFoodRequestAPI, createWasteRequestAPI } from '../Services/allAPI';
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
+import { userApiHandleContext } from '../Context/ContextShare';
 
 
 function CreateRequest() {
+    const {update, setUpdate} = useContext(userApiHandleContext)
     // Modal controllers
     const [foodShow, setFoodShow] = useState(false);
     const [wasteShow, setWasteShow] = useState(false);
@@ -118,66 +120,76 @@ function CreateRequest() {
     const handleRequest = async(e) => {
         e.preventDefault()
         if (foodShow) {
-            const token = sessionStorage.getItem("token")
-            const reqHeader = {
-                "Content-Type":"application/json",
-                "Authorization":`Bearer ${token}`
-            }
-            const result = await createFoodRequestAPI(foodReqDetails, reqHeader)
-            if (result.status === 200) {
-                toast.success("Food request created")
-                handleClose()
-                setFoodReqDetails({
-                    userId: "",
-                    username: "",
-                    packs: "",
-                    preference: "",
-                    postedTime: "",
-                    postedDate: "",
-                    delivery: "",
-                    status: "Created",
-                    description: "",
-                    address: "",
-                    pincode: "",
-                    phone: "",
-                    email: "",
-                    accepted: {
-                        
-                    }
-                })
+            if (foodReqDetails.packs === "" || foodReqDetails.preference === "" || foodReqDetails.delivery === "" || foodReqDetails.description === "") {
+                toast.warning("Please fill all details")
             } else {
-                toast.error("An error occurred")
+                const token = sessionStorage.getItem("token")
+                const reqHeader = {
+                    "Content-Type":"application/json",
+                    "Authorization":`Bearer ${token}`
+                }
+                const result = await createFoodRequestAPI(foodReqDetails, reqHeader)
+                if (result.status === 200) {
+                    toast.success("Food request created")
+                    setUpdate(result)
+                    handleClose()
+                    setFoodReqDetails({
+                        userId: "",
+                        username: "",
+                        packs: "",
+                        preference: "",
+                        postedTime: "",
+                        postedDate: "",
+                        delivery: "",
+                        status: "Created",
+                        description: "",
+                        address: "",
+                        pincode: "",
+                        phone: "",
+                        email: "",
+                        accepted: {
+                            
+                        }
+                    })
+                } else {
+                    toast.error("An error occurred")
+                }
             }
         }else if (wasteShow){
-            const token = sessionStorage.getItem("token")
-            const reqHeader = {
-                "Content-Type":"application/json",
-                "Authorization":`Bearer ${token}`
-            }
-            const result = await createWasteRequestAPI(wasteReqDetails, reqHeader)
-            if (result.status === 200) {
-                toast.success("Waste request created")
-                handleClose()
-                setWasteReqDetails({
-                    userId: "",
-                    username: "",
-                    quantity: "",
-                    type: "",
-                    postedTime: "",
-                    postedDate: "",
-                    delivery: "",
-                    status: "Created",
-                    description: "",
-                    address: "",
-                    pincode: "",
-                    phone: "",
-                    email: "",
-                    accepted: {
-                        
-                    }
-                })
+            if (wasteReqDetails.quantity === "" || wasteReqDetails.type === "" || wasteReqDetails.delivery === "" || wasteReqDetails.description === "") {
+                toast.warning("Please fill all details")
             } else {
-                toast.error("An error occurred")
+                const token = sessionStorage.getItem("token")
+                const reqHeader = {
+                    "Content-Type":"application/json",
+                    "Authorization":`Bearer ${token}`
+                }
+                const result = await createWasteRequestAPI(wasteReqDetails, reqHeader)
+                if (result.status === 200) {
+                    toast.success("Waste request created")
+                    setUpdate(result)
+                    handleClose()
+                    setWasteReqDetails({
+                        userId: "",
+                        username: "",
+                        quantity: "",
+                        type: "",
+                        postedTime: "",
+                        postedDate: "",
+                        delivery: "",
+                        status: "Created",
+                        description: "",
+                        address: "",
+                        pincode: "",
+                        phone: "",
+                        email: "",
+                        accepted: {
+                            
+                        }
+                    })
+                } else {
+                    toast.error("An error occurred")
+                }
             }
         }else {
             toast.error("An internal error has occurred. Please refresh the page")
@@ -201,7 +213,6 @@ function CreateRequest() {
 
     return (
         <>
-            <ToastContainer />
             <button className='btn btn-success goto-dashboard m-2' onClick={handleFoodShow} style={{minWidth:'13rem'}}>Create Food Request</button>
             <button className='btn btn-success goto-dashboard m-2' onClick={handleWasteShow} style={{minWidth:'13rem'}}>Create Waste Request</button>
 
@@ -282,8 +293,8 @@ function CreateRequest() {
                         <Form.Group className='mb-3'>
                             <Form.Select aria-label="Delivery Preference" name='delivery' onChange={(e) => {handleInput(e)}}>
                                 <option value="" selected>Select delivery Preference</option>
-                                <option value="deliver">Pickup from my address</option>
-                                <option value="pickup">I will deliver</option>
+                                <option value="deliver">I will deliver</option>
+                                <option value="pickup">Pickup from my address</option>
                             </Form.Select>
                         </Form.Group>
                         <Form.Group className="mb-3">

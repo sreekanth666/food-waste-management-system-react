@@ -1,19 +1,37 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Avatar from '@mui/material/Avatar';
+import UpdateProfile from '../../Components/UpdateProfile';
+import ChangePassword from './ChangePassword';
+import { toast } from 'react-toastify';
+import { userApiHandleContext } from '../../Context/ContextShare';
+import { useMediaQuery } from 'react-responsive';
 
 function Profile() {
+    const isTabletOrMobile = useMediaQuery({ minWidth: 1224 })
+    const {sessionUpdate, setSessionUpdate} = useContext(userApiHandleContext)
     const [userDetails, setUserDetails] = useState({})
     useEffect(() => {
         if (sessionStorage.getItem("existingUser")) {
             setUserDetails(JSON.parse(sessionStorage.getItem("existingUser")));
         } else {
-            
+            toast.error("An internal error occurred. Please login again")
         }
-    }, [])
+    }, [sessionUpdate])
+
+    // Handle logout
+    const logout = () => {
+        sessionStorage.removeItem("existingUser")
+        sessionStorage.removeItem("token")
+        navigate("/")
+    }
     return (
         <>
-            <div className="container-fluid rounded-3 p-3" style={{backgroundColor:'#e8f3ee'}}>
+            <div className={!isTabletOrMobile ? "d-flex align-items-center justify-content-between container-fluid rounded-3 p-3" : "container-fluid rounded-3 p-3"} style={{backgroundColor:'#e8f3ee'}}>
                 <p className="fs-5 m-0" style={{fontWeight:'500'}}>Profile</p>
+                {
+                    !isTabletOrMobile &&
+                    <button className='btn btn-danger btn-sm' style={{fontWeight:'500'}} onClick={logout}>Logout</button>
+                }
             </div>
             <div className='d-flex justify-content-center p-0 w-100'>
                 <div className="container-fluid row p-0 gap-3 mt-3 w-100">
@@ -25,7 +43,7 @@ function Profile() {
                                 alt="Remy Sharp"
                                 src="/broken-image.jpg"
                             >
-                                SK
+                                {userDetails.username?.split('')[0]}
                             </Avatar>
                             </div>
                             <p className='fs-3 m-0' style={{fontWeight:'500'}}>{userDetails.username}</p>
@@ -34,7 +52,7 @@ function Profile() {
                         <div className="d-flex flex-column rounded-3 p-2 align-items-center mb-3" style={{backgroundColor:'#e8f3ee'}}>
                             <p className='fs-5 m-0' style={{fontWeight:'500'}}>Don't miss out!</p>
                             <p className='m-0 text-center' style={{color:'#7c7c7c'}}>Remember to update your email for staying connected</p>
-                            <button className='btn m-2 btn-success goto-dashboard ps-3 pe-3 btn-sm'>Update profile</button>
+                            <UpdateProfile />
                         </div>
                     </div>
                     <div className="col-sm-12 col-md-12 col-lg-8 col-xl-8 p-0">
@@ -68,7 +86,7 @@ function Profile() {
                                 <div className="row gap-2 m-0 p-0 mt-3 mb-3">
                                     <div className="col" style={{color:'#7c7c7c'}}>Password</div>
                                     <div className="col">***********</div>
-                                    <div className="col"><button className='btn btn-success goto-dashboard ps-3 pe-3 btn-sm'>Change</button></div>
+                                    <div className="col"><ChangePassword /></div>
                                 </div>
                                 <div className="row gap-2 m-0 p-0 mb-3">
                                     <div className="col-8 text-danger" style={{color:'#7c7c7c',fontSize:'small'}}>Your password is crucial—keep it safe, never share, and remember it well</div>
