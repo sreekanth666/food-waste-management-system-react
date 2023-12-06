@@ -27,7 +27,6 @@ function UpdateProfile() {
     const handleShow = () => setShow(true);
 
     const existingUserDetails = JSON.parse(sessionStorage.getItem("existingUser"))
-    console.log(existingUserDetails);
     const districtsInKerala = [
         'Thiruvananthapuram',
         'Kollam',
@@ -56,7 +55,6 @@ function UpdateProfile() {
         attribute: existingUserDetails.attribute,
         id: existingUserDetails._id
     })
-    console.log(updatedUserDetails);
 
     // Handle update
     const handleUpdate = async() => {
@@ -66,7 +64,6 @@ function UpdateProfile() {
             "Authorization":`Bearer ${token}`
         }
         const result = await editUserDetailsAPI(updatedUserDetails, reqHeader)
-        console.log(updatedUserDetails);
         if (result.status === 200) {
             toast.success("Details updated")
             sessionStorage.setItem("existingUser", JSON.stringify(result.data))
@@ -74,7 +71,6 @@ function UpdateProfile() {
             handleClose()
         }else {
             toast.error("An error occurred")
-            console.log(result);
         }
     }
 
