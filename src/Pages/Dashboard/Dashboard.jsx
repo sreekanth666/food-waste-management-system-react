@@ -39,7 +39,7 @@ function Dashboard() {
     // -----------------------------------------------------------------------------
     // -----------------------------------------------------------------------------
     // All requests made by the user
-    const {requestsMadeByUser, setRequestMadeByUser, update, setUpdate} = useContext(userApiHandleContext)
+    const {setRequestMadeByUser, update} = useContext(userApiHandleContext)
     const fetchAllRequests = async() => {
         const token = sessionStorage.getItem("token")
         const reqHeader = {
@@ -52,7 +52,7 @@ function Dashboard() {
     // -----------------------------------------------------------------------------
 
     // All requests under user default pincode
-    const {getAllRequestsByPincode, setGetAllRequestsByPincode} = useContext(userApiHandleContext)
+    const {setGetAllRequestsByPincode} = useContext(userApiHandleContext)
     const existingUser = JSON.parse(sessionStorage.getItem('existingUser'))
     const pincode = existingUser?.pincode
     const token = sessionStorage.getItem("token")
@@ -70,9 +70,8 @@ function Dashboard() {
     // -----------------------------------------------------------------------------
 
     // Get all accepted requests
-    const {acceptedRequestsByUser, setAcceptedRequestsByUser} = useContext(userApiHandleContext)
+    const {setAcceptedRequestsByUser} = useContext(userApiHandleContext)
     const getUserAcceptedRequests = async() => {
-        console.log("entered");
         const reqHeader = {
             "Content-Type":"application/json",
             "Authorization":`Bearer ${token}`
@@ -87,6 +86,7 @@ function Dashboard() {
     // -----------------------------------------------------------------------------
     // -----------------------------------------------------------------------------
     
+    // eslint-disable-next-line
     useEffect(() => {
         fetchAllRequests()
         getAllRequestsPincode()

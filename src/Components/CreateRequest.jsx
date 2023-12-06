@@ -2,13 +2,13 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Modal, Button, Form } from 'react-bootstrap';
 import date from 'date-and-time'
 import { createFoodRequestAPI, createWasteRequestAPI } from '../Services/allAPI';
-import { toast, ToastContainer } from 'react-toastify'
+import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import { userApiHandleContext } from '../Context/ContextShare';
 
 
 function CreateRequest() {
-    const {update, setUpdate} = useContext(userApiHandleContext)
+    const {setUpdate} = useContext(userApiHandleContext)
     // Modal controllers
     const [foodShow, setFoodShow] = useState(false);
     const [wasteShow, setWasteShow] = useState(false);
@@ -40,6 +40,8 @@ function CreateRequest() {
         phone: "",
         email: ""
     })
+
+    // eslint-disable-next-line
     useEffect(() => {
         if (sessionStorage.getItem("existingUser")) {
             const userSessionData = JSON.parse(sessionStorage.getItem("existingUser"))

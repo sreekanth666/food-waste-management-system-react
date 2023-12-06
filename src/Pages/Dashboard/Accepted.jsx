@@ -4,7 +4,7 @@ import AllWasteRequests from '../../Components/AllWasteRequests'
 import { useMediaQuery } from 'react-responsive'
 import { getRequestsPincode, updateDeliveryStatusAPI } from '../../Services/allAPI'
 import { userApiHandleContext } from '../../Context/ContextShare'
-import { toast, ToastContainer } from 'react-toastify'
+import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import AcceptedView from '../../Components/AcceptedView'
 
@@ -12,11 +12,13 @@ function Accepted() {
     const {update, setUpdate} = useContext(userApiHandleContext)
     const [accessAllRequests, setAccessAllRequests] = useState(null)
     const isTabletOrMobile = useMediaQuery({ minWidth: 1224 })
-    const {acceptedRequestsByUser, setAcceptedRequestsByUser} = useContext(userApiHandleContext)
+    const {acceptedRequestsByUser} = useContext(userApiHandleContext)
 
     // All requests under user pincode
-    const {getAllRequestsByPincode, setGetAllRequestsByPincode} = useContext(userApiHandleContext)
+    const {getAllRequestsByPincode} = useContext(userApiHandleContext)
     const [allRequests, setAllRequests] = useState([])
+
+    // eslint-disable-next-line
     useEffect(() => {
         setAllRequests(getAllRequestsByPincode)
     }, [])
@@ -39,6 +41,8 @@ function Accepted() {
         const result = await getRequestsPincode(reqBody, reqHeader)
         setAllRequests(result.data);
     }
+
+    // eslint-disable-next-line
     useEffect(() => {
         handleCustomSearch()
     }, [update])

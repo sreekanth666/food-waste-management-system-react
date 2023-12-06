@@ -2,17 +2,16 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Modal, Button } from 'react-bootstrap';
 import { TelegramIcon, TelegramShareButton, TwitterShareButton, WhatsappIcon, WhatsappShareButton, XIcon } from 'react-share'
 import { acceptRequestAPI } from '../Services/allAPI';
-import { toast, ToastContainer } from 'react-toastify'
+import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import date from 'date-and-time'
 import { userApiHandleContext } from '../Context/ContextShare';
 
 function AllFoodRequests({request}) {
-    const {update, setUpdate} = useContext(userApiHandleContext)
+    const {setUpdate} = useContext(userApiHandleContext)
     const [show, setShow] = useState(false);
     const handleClose = () => {
         setShow(false);
-        setAcceptedDetails({})
     }
     const handleShow = () => setShow(true);
 
@@ -37,7 +36,6 @@ function AllFoodRequests({request}) {
 
     const userDetails = JSON.parse(sessionStorage.getItem("existingUser"))
 
-    const [acceptedDetails, setAcceptedDetails] = useState({})
     const [loading, setLoading] = useState(false)
     const token = sessionStorage.getItem("token")
     const reqId = request._id

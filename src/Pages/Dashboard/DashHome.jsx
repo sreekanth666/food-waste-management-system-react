@@ -1,10 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import '../CSS/dashhome.css'
 import { userApiHandleContext } from '../../Context/ContextShare'
 
 function DashHome() {
-    const {requestsMadeByUser, setRequestMadeByUser} = useContext(userApiHandleContext)
-    const {acceptedRequestsByUser, setAcceptedRequestsByUser} = useContext(userApiHandleContext)
+    const {requestsMadeByUser} = useContext(userApiHandleContext)
+    const {acceptedRequestsByUser} = useContext(userApiHandleContext)
     
     return (
         <>
@@ -73,14 +73,14 @@ function DashHome() {
                             <div className="row gap-2 m-0 p-0">
                                     <div className="col-8" style={{color:'#7c7c7c'}}>Food Requests</div>
                                     <div className="col">
-                                        <span className='home-badges-4' style={{color:'#cf1322'}}>{acceptedRequestsByUser.allFoodAccepts?.filter(requests => (requests.status == "Accepted")).length > 0 ? acceptedRequestsByUser.allFoodAccepts?.filter(requests => (requests.status == "Accepted")).length : "0"}</span>
+                                        <span className='home-badges-4' style={{color:'#cf1322'}}>{acceptedRequestsByUser.allFoodAccepts?.filter(requests => (requests.status === "Accepted")).length > 0 ? acceptedRequestsByUser.allFoodAccepts?.filter(requests => (requests.status === "Accepted")).length : "0"}</span>
                                     </div>
                                 </div>
                                 <hr className='p-0 mt-2 mb-2' style={{borderColor: '#CDCFD0'}}/>
                                 <div className="row gap-2 m-0 p-0">
                                     <div className="col-8" style={{color:'#7c7c7c'}}>Waste Requests</div>
                                     <div className="col">
-                                        <span className='home-badges-4' style={{color:'#cf1322'}}>{acceptedRequestsByUser.allWasteAccepts?.filter(requests => (requests.status == "Accepted")).length > 0 ? acceptedRequestsByUser.allWasteAccepts?.filter(requests => (requests.status == "Accepted")).length : "0"}</span>
+                                        <span className='home-badges-4' style={{color:'#cf1322'}}>{acceptedRequestsByUser.allWasteAccepts?.filter(requests => (requests.status === "Accepted")).length > 0 ? acceptedRequestsByUser.allWasteAccepts?.filter(requests => (requests.status === "Accepted")).length : "0"}</span>
                                     </div>
                                 </div>
                             </div>

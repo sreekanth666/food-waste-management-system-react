@@ -35,7 +35,7 @@ function Navigation() {
                 </Offcanvas.Header>
                 <Offcanvas.Body>
                   <Nav className="justify-content-end flex-grow-1 pe-3">
-                    <Nav.Link href="#action1" className='active'>Home</Nav.Link>
+                    <Nav.Link className='active'><Link to='/' style={{textDecoration:'none'}} className='text-dark'>Home</Link></Nav.Link>
                     <Nav.Link href="#about">About</Nav.Link>
                     <NavDropdown
                       title="How it Works"

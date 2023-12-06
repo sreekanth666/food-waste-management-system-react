@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { Modal, Button } from 'react-bootstrap';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { changePasswordAPI, otpServiceAPI } from '../../Services/allAPI';
+import { formLabelClasses } from '@mui/material';
 
 function ChangePassword() {
     const userDetails = JSON.parse(sessionStorage.getItem("existingUser"))
@@ -13,6 +14,9 @@ function ChangePassword() {
         setLoading(false)
         setVerificationStatus(false)
         setOtpStatus(false)
+        setVerificationDetails({
+            email: ""
+        })
     }
     const handleShow = () => setShow(true);
     const [hidden, setHidden] = useState(false)
@@ -23,8 +27,8 @@ function ChangePassword() {
         email: ""
     })
     const [otpStatus, setOtpStatus] = useState(false)
-    console.log(verificationDetails);
     const verifyCredentials = async() => {
+        setDisableResent(false)
         if (verificationDetails.email === "") {
             toast.warning("Please enter email")
         } else {
@@ -37,12 +41,33 @@ function ChangePassword() {
             const getOTP = await otpServiceAPI(verificationDetails, reqHeader)
             setLoading(false)
             if (getOTP.status === 200) {
+                toast.info("OTP has been sent to the entered email")
                 setOtpStatus(true)
                 setHidden(true)
                 setOtp(getOTP.data)
             } else {
                 setOtpStatus(false)
             }
+        }
+    }
+
+    const [disableResent, setDisableResent] = useState(false)
+    const resendOTP = async() => {
+        setDisableResent(true)
+        const token = sessionStorage.getItem("token")
+        const reqHeader = {
+            "Content-Type":"application/json",
+            "Authorization":`Bearer ${token}`
+        }
+        const getOTP = await otpServiceAPI(verificationDetails, reqHeader)
+        setLoading(false)
+        if (getOTP.status === 200) {
+            toast.info("OTP is resent")
+            setOtpStatus(true)
+            setHidden(true)
+            setOtp(getOTP.data)
+        } else {
+            setOtpStatus(false)
         }
     }
 
@@ -82,12 +107,12 @@ function ChangePassword() {
                 toast.success("Password changed")
             } else {
                 toast.error("An error occurred")
-                console.log(result);
             }
             handleClose()
             setVerificationStatus(false)
         }
     }
+
 
     return (
         <>
@@ -113,8 +138,9 @@ function ChangePassword() {
                         {
                             otpStatus ?
                             <>
-                                <p className='text-center m-0'>OTP has been send to you email</p>
-                                <p className='text-center'>Didn't receive OTP? <a href="" style={{textDecoration: "none"}}>RESEND</a></p>
+                                <p className='text-center m-0'>OTP has been send to the entered email</p>
+                                <p className='text-danger text-center'>Please check you email</p>
+                                <p className='text-center' hidden={disableResent}>Didn't receive OTP? <span style={{textDecoration: "none",color:'#16a34a'}} onClick={resendOTP}>RESEND</span></p>
                             </> : null
                         }
                         {

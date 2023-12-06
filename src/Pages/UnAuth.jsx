@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 
 function UnAuth() {
     const isTabletOrMobile = useMediaQuery({ minWidth: 1224 })
-    console.log(isTabletOrMobile);
     return (
         <div className='container d-flex flex-column align-items-center justify-content-center' style={{height:'100dvh'}}>
             <div className='border-2 border rounded-5 ps-5 pe-5 mb-3'>

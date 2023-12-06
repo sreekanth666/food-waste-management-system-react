@@ -1,29 +1,33 @@
 import React, { useContext, useState } from 'react'
-import { Modal, Button, Form } from 'react-bootstrap';
-import { toast, ToastContainer } from 'react-toastify'
+import { Modal, Button } from 'react-bootstrap';
+import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import { editUserDetailsAPI } from '../Services/allAPI';
 import { userApiHandleContext } from '../Context/ContextShare';
 
 function UpdateProfile() {
-    const {sessionUpdate, setSessionUpdate} = useContext(userApiHandleContext)
+    const {setSessionUpdate} = useContext(userApiHandleContext)
     const [show, setShow] = useState(false);
     const handleClose = () => {
+        const updatedUser = JSON.parse(sessionStorage.getItem("existingUser"))
         setShow(false);
-        setUpdateUserDetails({...existingUserDetails, 
-            username: existingUserDetails.username,
-            phone: existingUserDetails.phone,
-            email: existingUserDetails.email,
-            city: existingUserDetails.city,
-            district: existingUserDetails.district,
-            state: existingUserDetails.state,
-            pincode: existingUserDetails.pincode,
-            attribute: existingUserDetails.attribute
+        setUpdateUserDetails({...updatedUser, 
+            username: updatedUser.username,
+            phone: updatedUser.phone,
+            email: updatedUser.email,
+            address: updatedUser.address,
+            city: updatedUser.city,
+            district: updatedUser.district,
+            state: updatedUser.state,
+            pincode: updatedUser.pincode,
+            attribute: updatedUser.attribute,
+            id: updatedUser._id
     })
     }
     const handleShow = () => setShow(true);
 
     const existingUserDetails = JSON.parse(sessionStorage.getItem("existingUser"))
+    console.log(existingUserDetails);
     const districtsInKerala = [
         'Thiruvananthapuram',
         'Kollam',
@@ -44,6 +48,7 @@ function UpdateProfile() {
         username: existingUserDetails.username,
         phone: existingUserDetails.phone,
         email: existingUserDetails.email,
+        address: existingUserDetails.address,
         city: existingUserDetails.city,
         district: existingUserDetails.district,
         state: existingUserDetails.state,
@@ -51,6 +56,7 @@ function UpdateProfile() {
         attribute: existingUserDetails.attribute,
         id: existingUserDetails._id
     })
+    console.log(updatedUserDetails);
 
     // Handle update
     const handleUpdate = async() => {
@@ -60,6 +66,7 @@ function UpdateProfile() {
             "Authorization":`Bearer ${token}`
         }
         const result = await editUserDetailsAPI(updatedUserDetails, reqHeader)
+        console.log(updatedUserDetails);
         if (result.status === 200) {
             toast.success("Details updated")
             sessionStorage.setItem("existingUser", JSON.stringify(result.data))
@@ -106,6 +113,12 @@ function UpdateProfile() {
                                 <th className='border-0'>Email</th>
                                 <td className='border-0'>
                                     <input type="text" className='form-control' value={updatedUserDetails.email} onChange={(e) => setUpdateUserDetails({...updatedUserDetails, email: e.target.value})} />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th className='border-0'>Address</th>
+                                <td className='border-0'>
+                                    <input type="text" className='form-control' value={updatedUserDetails.address} onChange={(e) => setUpdateUserDetails({...updatedUserDetails, address: e.target.value})} />
                                 </td>
                             </tr>
                             <tr>

@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { useMediaQuery } from 'react-responsive';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { TypeAnimation } from 'react-type-animation';
 import { loginAPI } from '../Services/allAPI';
 import { Link, useNavigate } from 'react-router-dom';
@@ -22,7 +21,6 @@ function Login() {
             toast.warning("Please enter email and password")
         } else {
             const result = await loginAPI(loginCredentials)
-            console.log(result);
             if (result.status === 200) {
                 sessionStorage.setItem("existingUser", JSON.stringify(result.data?.isUserExists))
                 sessionStorage.setItem("token", result.data?.token)

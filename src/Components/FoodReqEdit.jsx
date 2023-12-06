@@ -1,12 +1,12 @@
 import React, { useContext, useState } from 'react'
 import { Modal, Button, Form } from 'react-bootstrap';
 import { updateFoodRequestAPI } from '../Services/allAPI';
-import { toast, ToastContainer } from 'react-toastify'
+import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import { userApiHandleContext } from '../Context/ContextShare';
 
 function FoodReqEdit({request}) {
-    const {update, setUpdate} = useContext(userApiHandleContext)
+    const {setUpdate} = useContext(userApiHandleContext)
     const [show, setShow] = useState(false);
     const handleClose = () => {
         setShow(false);

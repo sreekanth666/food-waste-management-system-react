@@ -3,14 +3,14 @@ import CreateRequest from '../../Components/CreateRequest'
 import { userApiHandleContext } from '../../Context/ContextShare';
 import FoodReqEdit from '../../Components/FoodReqEdit';
 import { deleteFoodRequestAPI, deleteWasteRequestAPI } from '../../Services/allAPI';
-import { toast, ToastContainer } from 'react-toastify'
+import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import WasteReqEdit from '../../Components/WasteReqEdit';
 import AcceptedUserDetails from '../../Components/AcceptedUserDetails';
 
 function Requests() {
-    const {update, setUpdate} = useContext(userApiHandleContext)
-    const {requestsMadeByUser, setRequestMadeByUser} = useContext(userApiHandleContext)
+    const {setUpdate} = useContext(userApiHandleContext)
+    const {requestsMadeByUser} = useContext(userApiHandleContext)
     const [userRequests, setUserRequests] = useState([])
     useEffect(() => {
         setUserRequests(requestsMadeByUser)

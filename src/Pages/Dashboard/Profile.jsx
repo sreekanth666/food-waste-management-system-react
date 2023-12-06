@@ -33,6 +33,8 @@ function Profile() {
         setIsLoggedIn(false)
         navigate("/")
     }
+
+    
     return (
         <>
             <div className={!isTabletOrMobile ? "d-flex align-items-center justify-content-between container-fluid rounded-3 p-3" : "container-fluid rounded-3 p-3"} style={{backgroundColor:'#e8f3ee'}}>

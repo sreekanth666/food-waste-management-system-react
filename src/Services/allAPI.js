@@ -73,7 +73,7 @@ export const deleteWasteRequestAPI = async(reqId, reqHeader) => {
 
 // Edit user details
 export const editUserDetailsAPI = async(reqBody, reqHeader) => {
-    return await commonAPI("PATCH", `${base_url}/user/edit/`, reqBody, reqHeader)
+    return await commonAPI("PATCH", `${base_url}/user/edit`, reqBody, reqHeader)
 }
 
 // Change password
