@@ -9,9 +9,15 @@ import Login from './Pages/Login';
 import 'react-toastify/dist/ReactToastify.css';
 import UnAuth from './Pages/UnAuth';
 import NotFound from './Pages/NotFound';
+import { useContext, useEffect, useState } from 'react';
+import { userApiHandleContext } from './Context/ContextShare';
 
 function App() {
-  const isLoggedIn = sessionStorage.getItem("token")
+  const {isLoggedIn} = useContext(userApiHandleContext)
+  const [token, setToken] = useState("")
+  useEffect(() => {
+    setToken(sessionStorage.getItem("token"))
+  }, [isLoggedIn])
   return (
     <>
       {/* <Navigation /> */}
@@ -19,7 +25,7 @@ function App() {
         <Route path='*' element={<NotFound />} />
         <Route path='/' element={<Home />} />
         <Route path='/setup' element={<Pincode />} />
-        <Route path='/dashboard' element={isLoggedIn ? <Dashboard /> : <UnAuth />} />
+        <Route path='/dashboard' element={token ? <Dashboard /> : <UnAuth />} />
         <Route path='/registration-and-listing' element={<RegistrationAndListing />} />
         <Route path='/register' element={<Register />} />
         <Route path='/login' element={<Login />} />

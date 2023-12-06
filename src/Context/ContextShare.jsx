@@ -7,9 +7,10 @@ function ContextShare({children}) {
     const [acceptedRequestsByUser, setAcceptedRequestsByUser] = useState([])
     const [update, setUpdate] = useState("")
     const [sessionUpdate, setSessionUpdate] = useState("")
+    const [isLoggedIn, setIsLoggedIn] = useState("")
     return (
         <>
-            <userApiHandleContext.Provider value={{requestsMadeByUser, setRequestMadeByUser, getAllRequestsByPincode, setGetAllRequestsByPincode, acceptedRequestsByUser, setAcceptedRequestsByUser, update, setUpdate, sessionUpdate, setSessionUpdate}}>
+            <userApiHandleContext.Provider value={{requestsMadeByUser, setRequestMadeByUser, getAllRequestsByPincode, setGetAllRequestsByPincode, acceptedRequestsByUser, setAcceptedRequestsByUser, update, setUpdate, sessionUpdate, setSessionUpdate, isLoggedIn, setIsLoggedIn}}>
                 {children}
             </userApiHandleContext.Provider>
         </>

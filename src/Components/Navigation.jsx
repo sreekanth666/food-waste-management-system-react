@@ -19,8 +19,8 @@ function Navigation() {
         {['lg'].map((expand) => (
           <Navbar key={expand} expand={expand} className="navbar-custom shadow bg-white pt-3 pb-3">
             <Container fluid>
-              <Navbar.Brand href="#">
-                <p className='fs-3 m-0' style={{fontWeight:"600"}}>Smile</p>
+              <Navbar.Brand>
+                <Link to='/' style={{textDecoration:'none'}}><p className='fs-3 m-0 text-dark' style={{fontWeight:"600"}}>Smile</p></Link>
               </Navbar.Brand>
               <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
               <Navbar.Offcanvas
@@ -49,9 +49,6 @@ function Navigation() {
                     >
                       <NavDropdown.Item className='nav-dropdown'>
                         <Link className='nav-link' to={'/registration-and-listing'}>Registration & Listing</Link>
-                      </NavDropdown.Item>
-                      <NavDropdown.Item className='nav-dropdown'>
-                        <Link className='nav-link'>Highlighting Impact & Stories</Link>
                       </NavDropdown.Item>
                     </NavDropdown>
                   </Nav>

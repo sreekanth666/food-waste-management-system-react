@@ -13,6 +13,7 @@ import { userApiHandleContext } from '../../Context/ContextShare'
 import { Link, useNavigate } from 'react-router-dom'
 
 function Dashboard() {
+    const {setIsLoggedIn} = useContext(userApiHandleContext)
     const navigate = useNavigate()
     const isTabletOrMobile = useMediaQuery({ minWidth: 1224 })
     const [selectedPage, setSelectedPage] = useState("home")
@@ -23,6 +24,7 @@ function Dashboard() {
     const logout = () => {
         sessionStorage.removeItem("existingUser")
         sessionStorage.removeItem("token")
+        setIsLoggedIn(false)
         navigate("/")
     }
 

@@ -255,10 +255,10 @@ function CreateRequest() {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
+                <Button variant="secondary" onClick={handleClose} style={{fontWeight:'500'}}>
                     Cancel
                 </Button>
-                <Button variant="primary"  onClick={handleRequest}>Create</Button>
+                <Button variant="primary"  onClick={handleRequest} className='sorted-btn'>Create</Button>
                 </Modal.Footer>
             </Modal>
 
@@ -303,10 +303,10 @@ function CreateRequest() {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
+                <Button variant="secondary" onClick={handleClose} style={{fontWeight:'500'}}>
                     Cancel
                 </Button>
-                <Button variant="primary" onClick={handleRequest}>Create</Button>
+                <Button variant="primary" onClick={handleRequest} className='sorted-btn'>Create</Button>
                 </Modal.Footer>
             </Modal>
         </>

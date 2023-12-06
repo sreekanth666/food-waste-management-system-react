@@ -6,11 +6,12 @@ import { toast } from 'react-toastify';
 import { userApiHandleContext } from '../../Context/ContextShare';
 import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom'
+import { Modal, Button } from 'react-bootstrap';
 
 function Profile() {
     const navigate = useNavigate()
     const isTabletOrMobile = useMediaQuery({ minWidth: 1224 })
-    const {sessionUpdate, setSessionUpdate} = useContext(userApiHandleContext)
+    const {sessionUpdate, setIsLoggedIn} = useContext(userApiHandleContext)
     const [userDetails, setUserDetails] = useState({})
     useEffect(() => {
         if (sessionStorage.getItem("existingUser")) {
@@ -20,10 +21,16 @@ function Profile() {
         }
     }, [sessionUpdate])
 
+    // Logout Modal control
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
     // Handle logout
     const logout = () => {
         sessionStorage.removeItem("existingUser")
         sessionStorage.removeItem("token")
+        setIsLoggedIn(false)
         navigate("/")
     }
     return (
@@ -32,7 +39,7 @@ function Profile() {
                 <p className="fs-5 m-0" style={{fontWeight:'500'}}>Profile</p>
                 {
                     !isTabletOrMobile &&
-                    <button className='btn btn-danger btn-sm' style={{fontWeight:'500'}} onClick={logout}>Logout</button>
+                    <button className='btn btn-danger btn-sm' style={{fontWeight:'500'}} onClick={handleShow}>Logout</button>
                 }
             </div>
             <div className='d-flex justify-content-center p-0 w-100'>
@@ -98,6 +105,29 @@ function Profile() {
                     </div>
                 </div>
             </div>
+
+            {/* Logout modal */}
+            <Modal
+                show={show}
+                onHide={handleClose}
+                size="md"
+                aria-labelledby="contained-modal-title-vcenter"
+                centered
+            >
+                <Modal.Body className='fs-4 text-center'>
+                    Are you sure you want to log out?
+                    <br />
+                    <div className="mt-1 mb-1" style={{color:'#7c7c7c',fontSize:'small'}}><i class="fa-solid fa-triangle-exclamation"></i> Logging out will end your current session</div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Cancel
+                    </Button>
+                    <Button variant="primary btn-danger" onClick={logout}>
+                        Logout
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </>
     )
 }

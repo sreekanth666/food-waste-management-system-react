@@ -1,6 +1,7 @@
 import React from 'react'
 import Navigation from '../Components/Navigation'
 import Footer from '../Components/Footer'
+import { Link } from 'react-router-dom'
 
 function RegistrationAndListing() {
     return (
@@ -15,17 +16,17 @@ function RegistrationAndListing() {
                     <div className="col-sm-12 col-md-12 col-lg-6 col-xl-6 mb-2">
                         <p className='fs-3' style={{color:'#7c7c7c',fontWeight:'500'}}>Sign Up</p>
                         <p>Get started on your waste management journey by creating an account. By signing up, you'll unlock a world of possibilities to share, repurpose, and responsibly dispose of surplus food or waste.</p>
-                        <button className='btn border-0 text-light w-100' style={{backgroundColor:'#16a34a',fontWeight:'500'}}>Sign Up</button>
+                        <Link to='/register'><button className='btn border-0 text-light w-100' style={{backgroundColor:'#16a34a',fontWeight:'500'}}>Sign Up</button></Link>
                     </div>
                     <div className="col-sm-12 col-md-12 col-lg-6 col-xl-6 d-flex align-items-end">
-                        <p className='fs-1 special-font-1' style={{color:'#16a34a',fontWeight:'500',lineHeight:'2rem'}}>Make a Difference<br />Access Community Features<br />Engage and Share</p>
+                        <p className='fs-1 special-font-1' style={{color:'#16a34a33',fontWeight:'500',lineHeight:'2rem'}}>Make a Difference<br />Access Community Features<br />Engage and Share</p>
                     </div>
                 </div>
 
                 <div className="mt-5">
                     <p className='fs-3' style={{color:'#7c7c7c',fontWeight:'500'}}>Listing Surplus Food or Waste</p>
                     <p>Once you're registered, you can easily list surplus food or waste that you want to repurpose or dispose of responsibly. Share details about the items, and let them find a new purpose or a suitable disposal method.</p>
-                    <button className='btn border border-2 border-dark w-100' style={{fontWeight:'500'}}>Log In to Start Listing</button>
+                    <Link to='/login'><button className='btn border border-2 border-dark w-100' style={{fontWeight:'500'}}>Log In to Start Listing</button></Link>
                 </div>
 
                 <div className="mt-5 row p-0">
