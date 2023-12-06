@@ -13,7 +13,7 @@ root.render(
     <ContextShare>
       <BrowserRouter>
         <App />
-        <ToastContainer />
+        <ToastContainer autoClose={3000}/>
       </BrowserRouter>
     </ContextShare>
   </React.StrictMode>
