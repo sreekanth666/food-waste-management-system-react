@@ -35,8 +35,12 @@ function AllWasteRequests({request}) {
     const userDetails = JSON.parse(sessionStorage.getItem("existingUser"))
 
     const [acceptedDetails, setAcceptedDetails] = useState({})
+    const [loading, setLoading] = useState(false)
+
     const token = sessionStorage.getItem("token")
     const reqId = request._id
+    const email = request.email
+    const username = request.username
     const address = `${userDetails.address}, ${userDetails.city}, ${userDetails.district}, ${userDetails.state}, ${userDetails.pincode}`
     const reqHeader = {
         "Content-Type":"application/json",
@@ -44,6 +48,7 @@ function AllWasteRequests({request}) {
     }
 
     const handleAccept = async() => {
+        setLoading(true)
         const accepted = {
             acceptedUserId: userDetails?._id,
             acceptedPhone: userDetails?.phone,
@@ -53,13 +58,16 @@ function AllWasteRequests({request}) {
             acceptedTime: date.format(today, 'hh:mm A'),
             acceptedDate: date.format(today, 'DD/MM/YYYY'),
             reqType: "waste",
-            status: "Accepted"
+            status: "Accepted",
+            email,
+            username
         }
         const result = await acceptRequestAPI(reqId, accepted, reqHeader)
         if (result.status === 200) {
             toast.success("Waste request accepted")
             setUpdate(result)
             handleClose()
+            setLoading(false)
         } else {
             toast.error("An error occurred")
         }
@@ -126,7 +134,7 @@ function AllWasteRequests({request}) {
                             </tr>
                             <tr>
                                 <th className='border-0'>Delivery information</th>
-                                <td className='border-0 text-danger'>{request.delivery === 'deliver' ? "You need to deliver the food to the destination" : "Requested person will pickup the food from your default location"}</td>
+                                <td className='border-0 text-danger'>{request.delivery === 'deliver' ? "Waste will delivered to your address" : "You need to pickup the waste from the above address"}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -136,7 +144,7 @@ function AllWasteRequests({request}) {
                 </Modal.Body>
                 <Modal.Footer>
                 <Button variant="secondary border-0" onClick={handleClose}>Cancel</Button>
-                <Button variant="success" className='sorted-btn' onClick={handleAccept}>Confirm</Button>
+                <Button variant="success" className='sorted-btn' onClick={handleAccept} disabled={loading === true ? true : false}>{loading === true ? <i class="fa-solid fa-spinner fa-spin-pulse"></i> : null} Confirm</Button>
                 </Modal.Footer>
             </Modal>
 

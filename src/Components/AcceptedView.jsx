@@ -37,6 +37,14 @@ function AcceptedView({accepted}) {
                                 <td className='border-0'>{accepted.accepted.acceptedDate}, {accepted.accepted.acceptedTime}</td>
                             </tr>
                             <tr>
+                                <th className='border-0'>Phone number</th>
+                                <td className='border-0'>{accepted.phone}</td>
+                            </tr>
+                            <tr>
+                                <th className='border-0'>Email</th>
+                                <td className='border-0'>{accepted.email}</td>
+                            </tr>
+                            <tr>
                                 <th className='border-0'>Address</th>
                                 <td className='border-0'>{accepted.address}</td>
                             </tr>

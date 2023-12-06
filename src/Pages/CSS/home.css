@@ -55,3 +55,11 @@
 .confirmation-table {
     border: 0;
 }
+.hover-home {
+    color: #16a34a;
+}
+.hover-home:hover {
+    background-color: #16a34a;
+    transition: 1s;
+    color: white !important;
+}

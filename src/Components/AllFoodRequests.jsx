@@ -38,8 +38,11 @@ function AllFoodRequests({request}) {
     const userDetails = JSON.parse(sessionStorage.getItem("existingUser"))
 
     const [acceptedDetails, setAcceptedDetails] = useState({})
+    const [loading, setLoading] = useState(false)
     const token = sessionStorage.getItem("token")
     const reqId = request._id
+    const email = request.email
+    const username = request.username
     const address = `${userDetails.address}, ${userDetails.city}, ${userDetails.district}, ${userDetails.state}, ${userDetails.pincode}`
     const reqHeader = {
         "Content-Type":"application/json",
@@ -47,6 +50,7 @@ function AllFoodRequests({request}) {
     }
 
     const handleAccept = async() => {
+        setLoading(true)
         const accepted = {
             acceptedUserId: userDetails?._id,
             acceptedPhone: userDetails?.phone,
@@ -56,20 +60,21 @@ function AllFoodRequests({request}) {
             acceptedTime: date.format(today, 'hh:mm A'),
             acceptedDate: date.format(today, 'DD/MM/YYYY'),
             reqType: "food",
-            status: "Accepted"
+            status: "Accepted",
+            email,
+            username
         }
         const result = await acceptRequestAPI(reqId, accepted, reqHeader)
         if (result.status === 200) {
             toast.success("Food request accepted")
             setUpdate(result)
             handleClose()
+            setLoading(false)
         } else {
             toast.error("An error occurred")
         }
     }
 
-    // TEST
-    console.log(request);
     return (
         <>
             {
@@ -141,7 +146,7 @@ function AllFoodRequests({request}) {
                 </Modal.Body>
                 <Modal.Footer>
                 <Button variant="secondary border-0" onClick={handleClose}>Cancel</Button>
-                <Button variant="success" className='sorted-btn' onClick={handleAccept}>Confirm</Button>
+                <Button variant="success" className='sorted-btn' onClick={handleAccept} disabled={loading === true ? true : false}>{loading === true ? <i class="fa-solid fa-spinner fa-spin-pulse"></i> : null} Confirm</Button>
                 </Modal.Footer>
             </Modal>
 

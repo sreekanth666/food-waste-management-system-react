@@ -45,7 +45,7 @@ function FoodReqEdit({request}) {
 
     return (
         <>
-            <button className='btn btn-success goto-dashboard btn-sm me-1' onClick={handleShow}>Edit</button>
+            <button className='btn btn-success goto-dashboard btn-sm me-1' disabled={request.status !== "Created" ? true : false} onClick={handleShow}>Edit</button>
 
             {/* MODAL */}
             <Modal

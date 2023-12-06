@@ -99,7 +99,14 @@ function Home() {
       </div>
 
       {/* Requests list */}
-      <h1>Special area</h1>
+      <div className="container mt-4 mb-4">
+        {
+          !isLoggedIn ?
+          <Link to='/register' style={{textDecoration:'none'}}><div className='hover-home p-2 d-flex align-items-center justify-content-center' style={{border:'3px solid #16a34a'}}><p className='fs-1 m-0' style={{fontWeight:'500'}}>JOIN US</p></div></Link>
+          :
+          <Link to='/dashboard' style={{textDecoration:'none'}}><div className='hover-home p-2 d-flex align-items-center justify-content-center' style={{border:'3px solid #16a34a'}}><p className='fs-1 m-0' style={{fontWeight:'500'}}>EXPLORE REQUESTS</p></div></Link>
+        }
+      </div>
 
       {/* About us */}
       <div className="container" id='about'>

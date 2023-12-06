@@ -80,3 +80,8 @@ export const editUserDetailsAPI = async(reqBody, reqHeader) => {
 export const changePasswordAPI = async(reqBody, reqHeader) => {
     return await commonAPI("PATCH", `${base_url}/user/change/password`, reqBody, reqHeader)
 }
+
+// OTP Service
+export const otpServiceAPI = async(reqBody, reqHeader) => {
+    return await commonAPI("POST", `${base_url}/user/password/change/`, reqBody, reqHeader)
+}

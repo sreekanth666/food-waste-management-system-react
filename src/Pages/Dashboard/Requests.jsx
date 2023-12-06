@@ -76,13 +76,13 @@ function Requests() {
                                                 {
                                                     userRequests.allFoodRequests?.map((request, index) => (
                                                         <tr>
-                                                            <td>{request.preference}</td>
+                                                            <td>{request.preference}<br /><span style={{color:'#7c7c7c',fontSize:'small'}}>{request._id}</span></td>
                                                             <td>{request.postedDate} <br /> {request.postedTime}</td>
                                                             <td className='text-center'>{request.status} {request.status === "Accepted" ? <AcceptedUserDetails accepted = {request}/> : null}</td>
                                                             <td>
                                                                 <div className='d-flex'>
-                                                                    <FoodReqEdit request = {request}/>
-                                                                    <button className='btn btn-success goto-dashboard btn-sm' onClick={() => deleteFoodRequest(request._id)}>Delete</button>
+                                                                    <FoodReqEdit request = {request} />
+                                                                    <button className='btn btn-success goto-dashboard btn-sm' disabled={request.status !== "Created" ? true : false} onClick={() => deleteFoodRequest(request._id)}>Delete</button>
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -122,7 +122,7 @@ function Requests() {
                                                             <td>
                                                                 <div className='d-flex'>
                                                                     <WasteReqEdit request={request}/>
-                                                                    <button className='btn btn-success goto-dashboard btn-sm' onClick={() => deleteWasteRequest(request._id)}>Delete</button>
+                                                                    <button className='btn btn-success goto-dashboard btn-sm' disabled={request.status !== "Created" ? true : false} onClick={() => deleteWasteRequest(request._id)}>Delete</button>
                                                                 </div>
                                                             </td>
                                                         </tr>
