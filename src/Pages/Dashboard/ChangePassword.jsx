@@ -139,7 +139,7 @@ function ChangePassword() {
                             otpStatus ?
                             <>
                                 <p className='text-center m-0'>OTP has been send to the entered email</p>
-                                <p className='text-danger text-center'>Please check you email</p>
+                                <p className='text-danger text-center'>Please check your email</p>
                                 <p className='text-center' hidden={disableResent}>Didn't receive OTP? <span style={{textDecoration: "none",color:'#16a34a'}} onClick={resendOTP}>RESEND</span></p>
                             </> : null
                         }

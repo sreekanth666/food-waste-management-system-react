@@ -120,7 +120,7 @@ function AllWasteRequests({request}) {
                             <tr>
                                 <th className='border-0'>Requested Items</th>
                                 <td className='border-0'>
-                                    {request.packs} Pack(s)
+                                    {request.quantity} Pack(s)
                                 </td>
                             </tr>
                             <tr>
