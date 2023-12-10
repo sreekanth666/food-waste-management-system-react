@@ -26,7 +26,7 @@ Welcome to Smile, an innovative platform focusing on food sharing and waste mana
 
 ## Backend Repository 🖥️
 The backend code for Smile is available in a separate repository. Explore and contribute to the backend here:
-https://github.com/sreekanth666/food-waste-management-system-react-server(backend_repository_link)
+[(backend_repository_link)](https://github.com/sreekanth666/food-waste-management-system-react-server)
 
 
 ## Contributing 🤝
