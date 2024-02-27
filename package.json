@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@adobe/css-tools": "^4.3.3",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/material": "^5.14.18",
@@ -51,6 +52,9 @@
     ]
   },
   "devDependencies": {
-    "ip": "^2.0.1"
+    "follow-redirects": "^1.15.5",
+    "ip": "^2.0.1",
+    "nth-check": "^2.1.1",
+    "postcss": "^8.4.35"
   }
 }
